@@ -1,0 +1,29 @@
+{
+  "name": "gamedevjs-2020",
+  "version": "0.1.0",
+  "description": "Submission for GameDevJS 2020 on Itch.io",
+  "main": "index.js",
+  "scripts": {
+    "build": "rollup -c",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ryuno-Ki/gamedevjs-2020.git"
+  },
+  "keywords": [],
+  "author": "André Jaenisch",
+  "license": "GPL-3.0+",
+  "bugs": {
+    "url": "https://github.com/Ryuno-Ki/gamedevjs-2020/issues"
+  },
+  "homepage": "https://github.com/Ryuno-Ki/gamedevjs-2020#readme",
+  "dependencies": {
+    "kontra": "6.9.1"
+  },
+  "devDependencies": {
+    "rollup": "2.6.1",
+    "@rollup/plugin-commonjs": "11.1.0",
+    "@rollup/plugin-node-resolve": "7.1.3"
+  }
+}
