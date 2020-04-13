@@ -8,7 +8,7 @@ function renderPlayer (image, frame) {
     animations: {
       stand: {
         frames: frame,
-	loop: false
+        loop: false
       }
     }
   })
@@ -24,34 +24,35 @@ function renderPlayer (image, frame) {
       this.draw()
 
       if (this.flipped) {
-	// Kudos: https://stackoverflow.com/a/3129152
-	/*
+        // Kudos: https://stackoverflow.com/a/3129152
+        /*
         const image = this.currentAnimation.spriteSheet.image
-	this.context.translate(this.x, this.y)
-	this.context.scale(-1, 1)
-	console.log('Spritesheet', this.currentAnimation)
+        this.context.translate(this.x, this.y)
+        this.context.scale(-1, 1)
+        console.log('Spritesheet', this.currentAnimation)
         console.log('Flip', ...unpackDrawData(this))
-	this.context.drawImage(...unpackDrawData(this))
-	*/
-	console.log('TODO: IMPLEMENT FLIPPING')
+        this.context.drawImage(...unpackDrawData(this))
+        */
+        console.log('TODO: IMPLEMENT FLIPPING')
       }
 
       if (this.turned === -1) {
-	/*
+        // Kudos: https://medium.com/web-maker/making-asteroids-with-kontra-js-and-web-maker-95559d39b45f#00b3
+        /*
         this.context.translate(this.x, this.y)
-	this.context.rotate(degreesToRadians(90))
-	this.context.drawImage(...unpackDrawData(this))
-	*/
-	console.log('TODO: IMPLEMENT TURNING UPWARDS')
+        this.context.rotate(degreesToRadians(90))
+        this.context.drawImage(...unpackDrawData(this))
+        */
+        console.log('TODO: IMPLEMENT TURNING UPWARDS')
       }
       
       if (this.turned === 1) {
-	/*
+        /*
         this.context.translate(this.x, this.y)
-	this.context.rotate(degreesToRadians(-90))
-	this.context.drawImage(...unpackDrawData(this))
-	*/
-	console.log('TODO: IMPLEMENT TURNING DOWNWARDS')
+        this.context.rotate(degreesToRadians(-90))
+        this.context.drawImage(...unpackDrawData(this))
+        */
+        console.log('TODO: IMPLEMENT TURNING DOWNWARDS')
       }
 
       this.context.restore()

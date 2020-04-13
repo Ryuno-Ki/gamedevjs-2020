@@ -2,6 +2,7 @@ const { GameLoop, init, initKeys, keyPressed } = require('kontra')
 
 const loadAssets = require('./assets')
 const renderGround = require('./scenes/game.scene')
+const renderBall = require('./sprites/ball')
 const renderPlayer = require('./sprites/player')
 
 window.onload = async () => {
@@ -13,19 +14,23 @@ window.onload = async () => {
   const tileEngine = renderGround(assets[0])
   const player = renderPlayer(assets[1], 1)
   const opponent = renderPlayer(assets[1], 2)
+  const ball = renderBall(assets[2])
 
   tileEngine.addObject(player)
   tileEngine.addObject(opponent)
+  tileEngine.addObject(ball)
 
   let loop = GameLoop({
     update: () => {
       movePlayer(player)
       moveOpponent(opponent)
+      moveBall({ player, opponent, ball })
     },
     render: () => {
       tileEngine.render()
       player.render()
       opponent.render()
+      ball.render()
     }
   })
   loop.start()
@@ -78,5 +83,26 @@ window.onload = async () => {
       opponent.y += 8
     }
     opponent.update()
+  }
+
+  function moveBall ({ player, opponent, ball }) {
+    const dpx = player.x - ball.x
+    const dpy = player.y - ball.y
+    const dox = opponent.x - ball.x
+    const doy = opponent.y - ball.y
+
+    const ddp = dpx * dpx + dpy * dpy
+    const ddo = dox * dox + doy * doy
+
+    if (ddp < ddo) {
+      ball.x = ball.x + dpx / 2
+      ball.y = ball.y + dpy / 2
+    }
+
+    if (ddo < ddp) {
+      ball.x = ball.x + dox / 2
+      ball.y = ball.y + doy / 2
+    }
+    ball.update()
   }
 }
