@@ -1,26 +1,42 @@
-const { keyPressed } = require('kontra')
+const { emit, keyPressed } = require('kontra')
 
 function movePlayer ({ player, canvas, tileEngine }) {
   if (keyPressed('left') && player.x >= 8) {
     player.flipped = true
     player.turned = 0
     player.x -= 8
+    emit(
+      'userInteraction',
+      { player: 'player', direction: 'left', dx: -8, dy: 0 }
+    )
   }
 
   if (keyPressed('right') && player.x <= (canvas.width - 21 - 8)) {
     player.flipped = false
     player.turned = 0
     player.x += 8
+    emit(
+      'userInteraction',
+      { player: 'player', direction: 'right', dx: 8, dy: 0 }
+    )
   }
 
   if (keyPressed('up') && player.y >= 8) {
     player.turned = -1
     player.y -= 8
+    emit(
+      'userInteraction',
+      { player: 'player', direction: 'up', dx: 0, dy: -8 }
+    )
   }
 
   if (keyPressed('down') && player.y <= (canvas.height - 31 - 8)) {
     player.turned = 1
     player.y += 8
+    emit(
+      'userInteraction',
+      { player: 'player', direction: 'down', dx: 0, dy: 8 }
+    )
   }
 
   tileEngine.sx = player.x
