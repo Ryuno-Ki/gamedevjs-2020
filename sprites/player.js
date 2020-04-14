@@ -8,6 +8,7 @@ function renderPlayer (image, frame) {
     animations: {
       stand: {
         frames: frame,
+        frameRate: 1,
         loop: false
       }
     }

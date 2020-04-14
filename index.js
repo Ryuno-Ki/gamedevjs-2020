@@ -1,124 +1,101 @@
-const { GameLoop, init, initKeys, keyPressed } = require('kontra')
+const {
+  GameLoop,
+  init,
+  initKeys,
+  initPointer,
+  keyPressed,
+  track
+} = require('kontra')
 
 const loadAssets = require('./assets')
 const renderGround = require('./scenes/game.scene')
 const renderBall = require('./sprites/ball')
+const renderBasket = require('./sprites/basket')
+const renderControl = require('./sprites/control')
 const renderPlayer = require('./sprites/player')
 const renderScore = require('./sprites/score')
 
+const { moveBall, moveOpponent, movePlayer } = require('./update')
+
 window.onload = async () => {
   'use strict'
-  const { canvas } = init()
+  const { canvas, context } = init()
+
+  maybeRescale(canvas, context)
+  canvas.onwheel = (event) => event.preventDefault()
+  canvas.onmousewheel = (event) => event.preventDefault()
+
   initKeys()
+  initPointer()
 
   const assets = await loadAssets()
-  const tileEngine = renderGround(assets[0])
-  const player = renderPlayer(assets[1], 1)
-  const opponent = renderPlayer(assets[1], 2)
-  const ball = renderBall(assets[2])
-  const playerScore = renderScore(assets[0], true)
-  const opponentScore = renderScore(assets[0], false)
+  const [ basketImage, groundImage, playerImage, ballImage ] = assets
+
+  const tileEngine = renderGround(groundImage)
+  const control = renderControl(groundImage)
+  const player = renderPlayer(playerImage, 1)
+  const opponent = renderPlayer(playerImage, 2)
+  const ball = renderBall(ballImage)
+  const playerBasket= renderBasket(basketImage, true)
+  const opponentBasket= renderBasket(basketImage, false)
+  const playerScore = renderScore(groundImage, true)
+  const opponentScore = renderScore(groundImage, false)
+
+  track(control)
+  tileEngine.addObject(control)
 
   tileEngine.addObject(player)
   tileEngine.addObject(opponent)
   tileEngine.addObject(ball)
+  tileEngine.addObject(playerBasket)
+  tileEngine.addObject(opponentBasket)
   tileEngine.addObject(playerScore)
   tileEngine.addObject(opponentScore)
 
   let loop = GameLoop({
     update: () => {
-      movePlayer(player)
-      moveOpponent(opponent)
-      moveBall({ player, opponent, ball, playerScore, opponentScore })
+      movePlayer({ player, canvas, tileEngine })
+      moveOpponent(opponent, canvas)
+      moveBall({
+        player,
+        opponent,
+        ball,
+        playerBasket,
+        opponentBasket,
+        playerScore,
+        opponentScore,
+      })
     },
     render: () => {
       tileEngine.render()
+      control.render()
       playerScore.render()
       opponentScore.render()
       player.render()
       opponent.render()
+      playerBasket.render()
+      opponentBasket.render()
       ball.render()
     }
   })
   loop.start()
 
-  function movePlayer (player) {
-    if (keyPressed('left') && player.x >= 8) {
-      player.flipped = true
-      player.turned = 0
-      player.x -= 8
+  function maybeRescale (canvas, context) {
+    const windowWidth = window.innerWidth
+    const windowHeight = window.innerHeight
+
+    if (windowWidth > canvas.width) {
+      return
     }
 
-    if (keyPressed('right') && player.x <= (canvas.width - 21 - 8)) {
-      player.flipped = false
-      player.turned = 0
-      player.x += 8
+    if (windowHeight > canvas.height) {
+      return
     }
 
-    if (keyPressed('up') && player.y >= 8) {
-      player.turned = -1
-      player.y -= 8
-    }
+    const scaleWidth = 0.95 * windowWidth / canvas.width
+    const scaleHeight = 0.95 * windowHeight / canvas.height
 
-    if (keyPressed('down') && player.y <= (canvas.height - 31 - 8)) {
-      player.turned = 1
-      player.y += 8
-    }
-    player.update()
-  }
-
-  function moveOpponent (opponent) {
-    if (keyPressed('a') && opponent.x >= 8) {
-      opponent.flipped = true
-      opponent.turned = 0
-      opponent.x -= 8
-    }
-
-    if (keyPressed('d') && opponent.x <= (canvas.width - 21 - 8)) {
-      opponent.flipped = false
-      opponent.turned = 0
-      opponent.x += 8
-    }
-
-    if (keyPressed('w') && opponent.y >= 8) {
-      opponent.turned = -1
-      opponent.y -= 8
-    }
-
-    if (keyPressed('s') && opponent.y <= (canvas.height - 31 - 8)) {
-      opponent.turned = 1
-      opponent.y += 8
-    }
-    opponent.update()
-  }
-
-  function moveBall ({ player, opponent, ball, playerScore, opponentScore }) {
-    const dpx = player.x - ball.x
-    const dpy = player.y - ball.y
-    const dox = opponent.x - ball.x
-    const doy = opponent.y - ball.y
-
-    const ddp = dpx * dpx + dpy * dpy
-    const ddo = dox * dox + doy * doy
-
-    if (ddp < ddo) {
-      ball.x = ball.x + dpx / 2
-      ball.y = ball.y + dpy / 2
-    }
-
-    if (ddo < ddp) {
-      ball.x = ball.x + dox / 2
-      ball.y = ball.y + doy / 2
-    }
-
-    if (ball.x >= 0 && ball.x <= 64 && ball.y >= 3 * 64 && ball.y <= 4 * 64) {
-      updateScore(playerScore, 'score1')
-    }
-
-    ball.update()
-  }
-
-  function updateScore (score, animation) {
-    score.playAnimation(animation)
+    context.imageSmoothingEnabled = false
+    context.scale(scaleWidth, scaleHeight)
   }
 }
