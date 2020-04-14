@@ -8,6 +8,7 @@ const {
 } = require('kontra')
 
 const loadAssets = require('./assets')
+const persistChanges = require('./persistance')
 const renderGround = require('./scenes/game.scene')
 const renderBall = require('./sprites/ball')
 const renderBasket = require('./sprites/basket')
@@ -27,6 +28,7 @@ window.onload = async () => {
 
   initKeys()
   initPointer()
+  persistChanges()
 
   const assets = await loadAssets()
   const [ basketImage, groundImage, playerImage, ballImage ] = assets
