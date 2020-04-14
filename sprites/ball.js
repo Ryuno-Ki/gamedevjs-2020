@@ -15,7 +15,7 @@ function renderBall(ball) {
 
   const sprite = Sprite({
     x: 17 + 5 * 64,
-    y: 16 + 3 * 64,
+    y: 16 + 4 * 64,
     animations: sheet.animations
   })
 

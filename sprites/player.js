@@ -15,7 +15,7 @@ function renderPlayer (image, frame) {
 
   const sprite = Sprite({
     x: 32 + 21 + (3 + frame) * 64,
-    y: 16 + 3 * 64,
+    y: 16 + 4 * 64,
     animations: body.animations,
     flipped: false,
     turned: 0,

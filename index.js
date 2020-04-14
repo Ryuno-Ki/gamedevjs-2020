@@ -4,6 +4,7 @@ const loadAssets = require('./assets')
 const renderGround = require('./scenes/game.scene')
 const renderBall = require('./sprites/ball')
 const renderPlayer = require('./sprites/player')
+const renderScore = require('./sprites/score')
 
 window.onload = async () => {
   'use strict'
@@ -15,19 +16,25 @@ window.onload = async () => {
   const player = renderPlayer(assets[1], 1)
   const opponent = renderPlayer(assets[1], 2)
   const ball = renderBall(assets[2])
+  const playerScore = renderScore(assets[0], true)
+  const opponentScore = renderScore(assets[0], false)
 
   tileEngine.addObject(player)
   tileEngine.addObject(opponent)
   tileEngine.addObject(ball)
+  tileEngine.addObject(playerScore)
+  tileEngine.addObject(opponentScore)
 
   let loop = GameLoop({
     update: () => {
       movePlayer(player)
       moveOpponent(opponent)
-      moveBall({ player, opponent, ball })
+      moveBall({ player, opponent, ball, playerScore, opponentScore })
     },
     render: () => {
       tileEngine.render()
+      playerScore.render()
+      opponentScore.render()
       player.render()
       opponent.render()
       ball.render()
@@ -85,7 +92,7 @@ window.onload = async () => {
     opponent.update()
   }
 
-  function moveBall ({ player, opponent, ball }) {
+  function moveBall ({ player, opponent, ball, playerScore, opponentScore }) {
     const dpx = player.x - ball.x
     const dpy = player.y - ball.y
     const dox = opponent.x - ball.x
@@ -103,6 +110,15 @@ window.onload = async () => {
       ball.x = ball.x + dox / 2
       ball.y = ball.y + doy / 2
     }
+
+    if (ball.x >= 0 && ball.x <= 64 && ball.y >= 3 * 64 && ball.y <= 4 * 64) {
+      updateScore(playerScore, 'score1')
+    }
+
     ball.update()
+  }
+
+  function updateScore (score, animation) {
+    score.playAnimation(animation)
   }
 }

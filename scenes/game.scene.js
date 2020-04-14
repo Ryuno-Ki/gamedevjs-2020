@@ -7,13 +7,14 @@ function renderGround (tilesheet) {
     tileheight: 64,
 
     width: 11,
-    height: 7,
+    height: 8,
 
     tilesets: [{ firstgid: 1, image: tilesheet }],
 
     layers: [{
       name: 'ground',
-        data: [
+      data: [
+	    1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,
             2,   3,   3,   3,   3,   4,   3,   3,   3,   3,   5,
           101, 102,   1,   1,   1,  17,   1,   1,   1,  94,  95,
            15,   1, 116,   1,   8,  47,  10,   1, 106,   1,  18,
