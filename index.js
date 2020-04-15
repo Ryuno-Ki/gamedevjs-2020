@@ -9,6 +9,7 @@ const {
 
 const loadAssets = require('./assets')
 const persistChanges = require('./persistance')
+const invitePeers = require('./rtc')
 const renderGround = require('./scenes/game.scene')
 const renderBall = require('./sprites/ball')
 const renderBasket = require('./sprites/basket')
@@ -20,6 +21,9 @@ const { moveBall, moveOpponent, movePlayer } = require('./update')
 
 window.onload = async () => {
   'use strict'
+  const messages = document.getElementById('messages')
+  invitePeers(messages)
+
   const { canvas, context } = init()
 
   maybeRescale(canvas, context)
