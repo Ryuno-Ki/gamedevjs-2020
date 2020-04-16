@@ -26,6 +26,8 @@ const htmlOptions = {
 const copyOptions = {
   flatten: false,
   targets: [{
+    src: 'assets/socket.io.js', dest: 'dist/',
+  }, {
     src: 'node_modules/simple-peer/simplepeer.min.js', dest: 'dist/',
   }, {
     src: 'assets/**/*.png', dest: 'dist/assets/'

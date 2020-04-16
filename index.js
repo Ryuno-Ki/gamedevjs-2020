@@ -21,6 +21,8 @@ const { moveBall, moveOpponent, movePlayer } = require('./update')
 
 window.onload = async () => {
   'use strict'
+  // TODO: https://github.com/socketio/socket.io-client
+  const socket = window.io()
   const messages = document.getElementById('messages')
   invitePeers(messages)
 
