@@ -1,6 +1,6 @@
 const { emit, on } = require('kontra')
 
-function invitePeer (parent) {
+function invitePeer (initialState) {
   const peer = new SimplePeer({
     initiator: location.hash === '#1'
   })
@@ -23,7 +23,7 @@ function invitePeer (parent) {
 
   peer.on('connect', () => {
     console.log('WebRTC CONNECT')
-    peer.send("Let's play together!")
+    peer.send(initialState)
   })
 
   peer.on('data', (data) => {

@@ -24,14 +24,88 @@
       width: 706px;
       height: 572px;
     }
+
+    /* Kudos https://tympanus.net/Tutorials/NaturalLanguageForm/ */
+    input {
+      padding: 0;
+      border: 0;
+      border-bottom: 1px solid currentColor;
+    }
+
+    /*
+    https://fonts.google.com/specimen/Quantico
+    https://fonts.google.com/specimen/Rubik+Mono+One
+    https://fonts.google.com/specimen/VT323
+    https://fonts.google.com/specimen/Geo
+    https://fonts.google.com/specimen/Press+Start+2P
+    */
   </style>
-  <base href="/gamedevjs-2020/"></base>
+  <script src="./alpinejs/dist/alpine.js"></script>
 </head>
-<body>
-  <div id="messages"></div>
-  <div id="game">
+<body x-data="getGlobalData()" x-init="init()">
+  <div id="messages">
+    <form id="form" method="POST" action="#" x-on:submit.prevent="submit">
+      <p>Hey there!</p>
+      <div>
+        <label for="name">
+	  My name is
+	  <input
+	    id="name"
+	    name="name"
+	    type="text"
+	    required
+	    x-model="model.name"
+	    x-show="step === 1"
+	    />
+	  <span x-text="model.name" x-show="step > 1"></span>
+	</label>
+
+	<button
+	  type="button"
+	  x-bind.disabled="model.name !== 'name'"
+	  x-on:click="nextStep(2)"
+	  x-show="step < 2">
+	  and ...
+	</button>
+	<span x-show="step > 1">and ...</span>
+      </div>
+      <div x-show="step > 1">
+        <label for="party">
+	  Today I feel like
+	  <select
+	    id="party"
+	    name="party"
+	    x-model="model.party"
+	    x-show="step === 2">
+	    <option value="" selected>umm…</option>
+	    <option value="single">playing alone</option>
+	    <option value="multi">playing with friends</option>
+	  </select>
+	  <span x-text="model.party" x-show="step > 2"></span>
+	</label>
+
+	<button
+	  type="button"
+	  x-bind.disabled="model.party !== ''"
+	  x-on:click="nextStep(3)"
+	  x-show="step < 3">
+	  so ...
+        </button>
+	<button	type="submit" x-show="step > 2">Come join me!</button>
+      </div>
+    </form>
+  </div>
+  <div id="game" x-show="ready">
     <canvas id="content" width="706" height="572">
     </canvas>
+  </div>
+
+  <div>
+    <ul id="user-interactions">
+      <template x-for="direction in userInteractions" :key="direction">
+        <li class="user-interaction" x-text="direction"></li>
+      </template>
+    </ul>
   </div>
   <script src="./socket.io.js"></script>
   <script src="./simple-peer/simplepeer.min.js"></script>

@@ -28,6 +28,8 @@ const copyOptions = {
   targets: [{
     src: 'assets/socket.io.js', dest: 'dist/',
   }, {
+    src: 'node_modules/alpinejs/dist/alpine.js', dest: 'dist/',
+  }, {
     src: 'node_modules/simple-peer/simplepeer.min.js', dest: 'dist/',
   }, {
     src: 'assets/**/*.png', dest: 'dist/assets/'

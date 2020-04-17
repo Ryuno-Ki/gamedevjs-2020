@@ -20,11 +20,51 @@ const renderScore = require('./sprites/score')
 
 const { moveBall, moveOpponent, movePlayer } = require('./update')
 
+;(function () {
+  'use strict';
+  window.getGlobalData = function () {
+    return {
+      step: 1,
+      model: {
+        name: '',
+	party: null
+      },
+      ready: false,
+      userInteractions: [],
+      init: function () {
+	console.log('Alpine ready')
+	on('userInteraction', (userInteraction) => {
+	  this.userInteractions.push(userInteraction.direction)
+	})
+      },
+      nextStep: function (step) {
+        this.step = step
+      },
+      submit: function () {
+	if (this.validates()) {
+	  const initialState = {
+	    name: this.model.name,
+	    party: this.model.party
+	  }
+	  window.localStorage.setItem('state', JSON.stringify(initialState))
+
+          if (this.model.party === 'multi') {
+	    invitePeers(initialState)
+	    this.ready = true
+	  } else {
+	    this.ready = true
+	  }
+	}
+      },
+      validates: function () {
+	return this.step === 3 && this.model !== '' && this.party !== null
+      }
+    }
+  }
+})();
+
 window.onload = async () => {
   'use strict'
-  const messages = document.getElementById('messages')
-  invitePeers(messages)
-
   const { canvas, context } = init()
 
   maybeRescale(canvas, context)
