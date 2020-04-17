@@ -66,6 +66,7 @@ function moveOpponent (opponent, canvas) {
     opponent.turned = 1
     opponent.y += 8
   }
+
   opponent.update()
 }
 

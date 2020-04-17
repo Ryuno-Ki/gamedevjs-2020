@@ -4,6 +4,7 @@ const {
   initKeys,
   initPointer,
   keyPressed,
+  on,
   track
 } = require('kontra')
 
@@ -21,8 +22,6 @@ const { moveBall, moveOpponent, movePlayer } = require('./update')
 
 window.onload = async () => {
   'use strict'
-  // TODO: https://github.com/socketio/socket.io-client
-  const socket = window.io()
   const messages = document.getElementById('messages')
   invitePeers(messages)
 
@@ -59,6 +58,12 @@ window.onload = async () => {
   tileEngine.addObject(opponentBasket)
   tileEngine.addObject(playerScore)
   tileEngine.addObject(opponentScore)
+
+  on('remote', (payload) => {
+    const { dx, dy } = payload
+    opponent.x += dx
+    opponent.y += dy
+  })
 
   let loop = GameLoop({
     update: () => {

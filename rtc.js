@@ -1,42 +1,48 @@
-function invitePeer (parent) {
-  const textarea = document.createElement('textarea')
-  parent.appendChild(textarea)
+const { emit, on } = require('kontra')
 
+function invitePeer (parent) {
   const peer = new SimplePeer({
     initiator: location.hash === '#1'
   })
 
-  if (!peer.initiator) {
-    const read = document.createElement('button')
-    read.type = 'button'
-    read.textContent = 'Join the party!'
-    read.addEventListener('click', () => {
-      console.log('Offer', textarea, textarea.value)
-      peer.signal(JSON.parse(textarea.value))
-    })
-    parent.appendChild(read)
-  }
+  // TODO: https://github.com/socketio/socket.io-client
+  const socket = window.io()
+  socket.on('connect', () => console.log('WebSocket connected'))
+  socket.on('disconnect', () => console.log('WebSocket disconnected'))
+  socket.on('signal', (data) => {
+    console.log('Socket.io Signal received', data)
+    peer.signal(data)
+  })
 
   peer.on('error', (error) => console.error('error', error))
 
   peer.on('signal', async (data) => {
-    console.log('Signal received', new Date(), data)
-    textarea.textContent = JSON.stringify(data)
-
-    if (data.type === 'offer') {
-      const p = document.createElement('p')
-      const text = document.createTextNode('Please send your friend this text to join')
-      p.appendChild(text)
-      parent.insertBefore(p, textarea)
-    }
+    console.log('WebRTC Signal received', new Date(), data)
+    socket.emit('signal', data)
   })
 
   peer.on('connect', () => {
-    console.log('CONNECT')
-    peer.send('Whatever ' + Math.random())
+    console.log('WebRTC CONNECT')
+    peer.send("Let's play together!")
   })
 
-  peer.on('data', (data) => console.log('data ' + data))
+  peer.on('data', (data) => {
+    let payload
+    const serialised = String.fromCharCode.apply(null, data)
+
+    try {
+      payload = JSON.parse(serialised)
+      emit('remote', payload)
+      console.log('data', payload)
+    } catch (err) {
+      // e.g. Initial handshake
+      console.error(err)
+    }
+  })
+
+  on('userInteraction', (action) => {
+    peer.send(JSON.stringify(action))
+  })
 }
 
 module.exports = invitePeer
