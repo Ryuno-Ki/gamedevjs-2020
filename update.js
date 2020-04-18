@@ -1,5 +1,29 @@
 const { emit, keyPressed } = require('kontra')
 
+function update ({
+  canvas,
+  tileEngine,
+  player,
+  opponent,
+  ball,
+  playerBasket,
+  opponentBasket,
+  playerScore,
+  opponentScore
+}) {
+  movePlayer({ player, canvas, tileEngine })
+  moveOpponent(opponent, canvas)
+  moveBall({
+    player,
+    opponent,
+    ball,
+    playerBasket,
+    opponentBasket,
+    playerScore,
+    opponentScore,
+  })
+}
+
 function movePlayer ({ player, canvas, tileEngine }) {
   if (keyPressed('left') && player.x >= 8) {
     player.flipped = true
@@ -112,8 +136,4 @@ function updateScore (score, animation) {
   score.playAnimation(animation)
 }
 
-module.exports = {
-  moveBall,
-  moveOpponent,
-  movePlayer
-}
+module.exports = update
