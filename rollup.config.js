@@ -26,6 +26,8 @@ const htmlOptions = {
 const copyOptions = {
   flatten: false,
   targets: [{
+    src: 'favicon.ico', dest: 'dist/',
+  }, {
     src: 'assets/socket.io.js', dest: 'dist/',
   }, {
     src: 'node_modules/alpinejs/dist/alpine.js', dest: 'dist/',
