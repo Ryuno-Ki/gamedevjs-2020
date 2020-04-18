@@ -30,6 +30,8 @@ const copyOptions = {
   }, {
     src: 'assets/socket.io.js', dest: 'dist/',
   }, {
+    src: 'assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf', dest: 'dist/'
+, }, {
     src: 'node_modules/alpinejs/dist/alpine.js', dest: 'dist/',
   }, {
     src: 'node_modules/simple-peer/simplepeer.min.js', dest: 'dist/',

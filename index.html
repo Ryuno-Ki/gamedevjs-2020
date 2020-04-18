@@ -4,11 +4,21 @@
   <title>Bizarro's Basketball X</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
+    @font-face {
+      font-family: 'GameFont';
+      src: url('./fonts/Press_Start_2P/PressStart2P-Regular.ttf') format('truetype');
+    }
+
     body {
+      font-family: GameFont, serif;
       margin: 0;
       padding: 0;
       max-height: 100vh;
       max-width: 100vw;
+    }
+
+    button {
+      font-family: GameFont, serif;
     }
 
     #game {
@@ -99,7 +109,15 @@
       </div>
     </form>
   </div>
+
   <div id="game" x-show="ready">
+    <div x-show="model.party === 'single'">
+      Use arrow keys or WASD to control a character.
+    </div>
+    <div x-show="model.party === 'multi'">
+      Use arrow keys to control your character.
+    </div>
+
     <canvas
       id="content"
       width="706"
