@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License along with thi
 const htmlOptions = {
   template: './index.html',
   fileName: './dist/index.html',
-  onlinePath: 'https://ryuno-ki.github.io/gamedevjs-2020',
+  // onlinePath: 'https://ryuno-ki.github.io/gamedevjs-2020',
   minify: true
 }
 
