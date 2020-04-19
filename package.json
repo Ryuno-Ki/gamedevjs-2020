@@ -6,7 +6,10 @@
   "scripts": {
     "build": "rollup -c",
     "deploy": "npm run gh-pages",
+    "emojis": "node reaction.js",
     "gh-pages": "gh-pages -d dist",
+    "prebuild": "npm run emojis",
+    "predeploy": "npm run build",
     "prestart": "npm run build",
     "start": "node server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -25,7 +28,11 @@
   "dependencies": {
     "alpinejs": "2.2.5",
     "express": "4.17.1",
+    "install": "0.13.0",
     "kontra": "6.9.1",
+    "npm": "6.14.4",
+    "openmoji": "12.2.0",
+    "openmoji-spritemap-generator": "1.1.0",
     "simple-peer": "9.6.2",
     "socket.io": "2.3.0",
     "webrtc-adapter": "7.5.1"

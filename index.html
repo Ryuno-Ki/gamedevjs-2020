@@ -3,53 +3,7 @@
   <meta charset="utf-8" />
   <title>Bizarro's Basketball X</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    @font-face {
-      font-family: 'GameFont';
-      src: url('./fonts/Press_Start_2P/PressStart2P-Regular.ttf') format('truetype');
-    }
-
-    body {
-      font-family: GameFont, serif;
-      margin: 0;
-      padding: 0;
-      max-height: 100vh;
-      max-width: 100vw;
-    }
-
-    button {
-      font-family: GameFont, serif;
-    }
-
-    #game {
-      cursor: pointer;
-      display: flex;
-      place-items: center;
-      overflow: hidden;
-    }
-
-    #content {
-      display: block;
-      margin: 0 auto;
-      width: 706px;
-      height: 572px;
-    }
-
-    /* Kudos https://tympanus.net/Tutorials/NaturalLanguageForm/ */
-    input {
-      padding: 0;
-      border: 0;
-      border-bottom: 1px solid currentColor;
-    }
-
-    /*
-    https://fonts.google.com/specimen/Quantico
-    https://fonts.google.com/specimen/Rubik+Mono+One
-    https://fonts.google.com/specimen/VT323
-    https://fonts.google.com/specimen/Geo
-    https://fonts.google.com/specimen/Press+Start+2P
-    */
-  </style>
+  <link rel="stylesheet" href="./style.css" />
   <script src="./alpinejs/dist/alpine.js"></script>
 </head>
 <body x-data="getGlobalData()" x-init="init()">
@@ -63,6 +17,7 @@
             id="name"
             name="name"
             type="text"
+	    autofocus
             required
             x-model="model.name"
             x-show="step === 1"
@@ -98,7 +53,7 @@
           type="button"
           x-bind.disabled="model.party !== ''"
           x-on:click="nextStep(3)"
-          x-show="step < 3">
+          x-show="model.party !== '' && step < 3">
           so ...
         </button>
         <button type="submit" x-show="step === 3">Come join me!</button>
@@ -112,7 +67,9 @@
 
   <div id="game" x-show="ready">
     <div x-show="model.party === 'single'">
-      Use arrow keys or WASD to control a character.
+      Use arrow keys or 
+      <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>
+      to control a character.
     </div>
     <div x-show="model.party === 'multi'">
       Use arrow keys to control your character.

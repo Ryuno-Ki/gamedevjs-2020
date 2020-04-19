@@ -1,0 +1,64 @@
+@font-face {
+  font-family: 'GameFont';
+  src: url('./fonts/Press_Start_2P/PressStart2P-Regular.ttf') format('truetype');
+}
+
+body {
+  font-family: GameFont, serif;
+  margin: 0;
+  padding: 0;
+  max-height: 100vh;
+  max-width: 100vw;
+}
+
+button,
+kbd {
+  font-family: GameFont, serif;
+}
+
+#messages {
+  display: flex;
+  min-height: 95vh;
+  place-content: center;
+}
+
+#form {
+  max-width: 32em;
+  margin: auto;
+  outline: 2px dashed currentColor;
+  outline-offset: 1em;
+}
+
+#form div {
+  margin-block-end: 1em;
+}
+
+#game {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  overflow: hidden;
+}
+
+#content {
+  display: block;
+  margin: 0 auto;
+  width: 706px;
+  height: 572px;
+}
+
+/* Kudos https://tympanus.net/Tutorials/NaturalLanguageForm/ */
+input {
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+}
+
+/*
+https://fonts.google.com/specimen/Quantico
+https://fonts.google.com/specimen/Rubik+Mono+One
+https://fonts.google.com/specimen/VT323
+https://fonts.google.com/specimen/Geo
+https://fonts.google.com/specimen/Press+Start+2P
+*/

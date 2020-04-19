@@ -28,6 +28,8 @@ const copyOptions = {
   targets: [{
     src: 'favicon.ico', dest: 'dist/',
   }, {
+    src: 'style.css', dest: 'dist/',
+  }, {
     src: 'assets/socket.io.js', dest: 'dist/',
   }, {
     src: 'assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf', dest: 'dist/'
