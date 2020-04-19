@@ -25,46 +25,53 @@ function update ({
 }
 
 function movePlayer ({ player, canvas, tileEngine }) {
-  if (keyPressed('left') && player.x >= 8) {
+  const dx = 8
+  const dy = 8
+  const upperFieldBoundary = 1 * 64
+  const lowerFieldBoundary = 8 * 64
+
+  if (keyPressed('left') && player.x >= dx) {
     player.flipped = true
     player.turned = 0
-    player.x -= 8
+    player.x -= dx
+    tileEngine.sx -= dx
     emit(
       'userInteraction',
-      { player: 'player', direction: 'left', dx: -8, dy: 0 }
+      { player: 'player', direction: 'left', dx: -dx, dy: 0 }
     )
   }
 
-  if (keyPressed('right') && player.x <= (canvas.width - 21 - 8)) {
+  if (keyPressed('right') && player.x <= (canvas.width - 21 - dx)) {
     player.flipped = false
     player.turned = 0
-    player.x += 8
+    player.x += dx
+    tileEngine.sx += dx
     emit(
       'userInteraction',
-      { player: 'player', direction: 'right', dx: 8, dy: 0 }
+      { player: 'player', direction: 'right', dx: dx, dy: 0 }
     )
   }
 
-  if (keyPressed('up') && player.y >= 8) {
+  if (keyPressed('up') && player.y >= upperFieldBoundary + dy) {
     player.turned = -1
-    player.y -= 8
+    player.y -= dy
+    tileEngine.sy -= dy
     emit(
       'userInteraction',
-      { player: 'player', direction: 'up', dx: 0, dy: -8 }
+      { player: 'player', direction: 'up', dx: 0, dy: -dy }
     )
   }
 
-  if (keyPressed('down') && player.y <= (canvas.height - 31 - 8)) {
+  if (keyPressed('down') && player.y <= (lowerFieldBoundary - 31 - dy)) {
     player.turned = 1
-    player.y += 8
+    player.y += dy
+    tileEngine.sy += dy
     emit(
       'userInteraction',
-      { player: 'player', direction: 'down', dx: 0, dy: 8 }
+      { player: 'player', direction: 'down', dx: 0, dy: dy }
     )
   }
 
-  tileEngine.sx = player.x
-  tileEngine.sy = player.y
   player.update()
 }
 

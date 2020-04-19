@@ -23,7 +23,7 @@ const update = require('../update')
 async function startSinglePlayerGame (initialState) {
   const { canvas, context } = init()
 
-  maybeRescale(canvas, context)
+  // maybeRescale(canvas, context)
   initKeys()
   initPointer()
   persistChanges()
