@@ -22,11 +22,21 @@ kbd {
   place-content: center;
 }
 
+#messages.ready {
+  min-height: auto;
+}
+
 #form {
   max-width: 32em;
   margin: auto;
   outline: 2px dashed currentColor;
   outline-offset: 1em;
+  transition: all 1s ease-in-out;
+}
+
+.ready #form {
+  max-width: initial;
+  outline: none;
 }
 
 #form div {

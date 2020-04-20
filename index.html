@@ -7,7 +7,7 @@
   <script src="./alpinejs/dist/alpine.js"></script>
 </head>
 <body x-data="getGlobalData()" x-init="init()">
-  <div id="messages">
+  <div id="messages" x-bind:class="{ 'ready': ready }">
     <form id="form" method="POST" action="#" x-on:submit.prevent="submit">
       <p>Hey there!</p>
       <div>
