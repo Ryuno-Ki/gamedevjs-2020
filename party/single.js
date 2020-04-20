@@ -1,13 +1,3 @@
-const {
-  GameLoop,
-  init,
-  initKeys,
-  initPointer,
-  keyPressed,
-  on,
-  track
-} = require('kontra')
-
 const loadAssets = require('../assets')
 const persistChanges = require('../persistance')
 const invitePeers = require('../rtc')
@@ -21,6 +11,16 @@ const renderScore = require('../sprites/score')
 const update = require('../update')
 
 async function startSinglePlayerGame (initialState) {
+  const {
+    GameLoop,
+    init,
+    initKeys,
+    initPointer,
+    keyPressed,
+    on,
+    track
+  } = window.kontra
+
   const { canvas, context } = init()
 
   // maybeRescale(canvas, context)

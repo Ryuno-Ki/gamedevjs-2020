@@ -1,5 +1,3 @@
-const { emit, on } = require('kontra')
-
 function invitePeer (initialState) {
   const peer = new SimplePeer({
     initiator: location.hash === '#1'
@@ -32,7 +30,7 @@ function invitePeer (initialState) {
 
     try {
       payload = JSON.parse(serialised)
-      emit('remote', payload)
+      window.kontra.emit('remote', payload)
       console.log('data', payload)
     } catch (err) {
       // e.g. Initial handshake
@@ -40,7 +38,7 @@ function invitePeer (initialState) {
     }
   })
 
-  on('userInteraction', (action) => {
+  window.kontra.on('userInteraction', (action) => {
     peer.send(JSON.stringify(action))
   })
 }

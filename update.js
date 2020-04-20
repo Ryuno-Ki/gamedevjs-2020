@@ -1,5 +1,3 @@
-const { emit, keyPressed } = require('kontra')
-
 function update ({
   canvas,
   tileEngine,
@@ -25,6 +23,9 @@ function update ({
 }
 
 function movePlayer ({ player, canvas, tileEngine }) {
+  const emit = window.kontra.emit
+  const keyPressed = window.kontra.keyPressed
+
   const dx = 8
   const dy = 8
   const upperFieldBoundary = 1 * 64
@@ -76,6 +77,8 @@ function movePlayer ({ player, canvas, tileEngine }) {
 }
 
 function moveOpponent (opponent, canvas) {
+  const keyPressed = window.kontra.keyPressed
+
   if (keyPressed('a') && opponent.x >= 8) {
     opponent.flipped = true
     opponent.turned = 0

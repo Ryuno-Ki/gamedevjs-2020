@@ -1,7 +1,5 @@
-const { Sprite, SpriteSheet } = require('kontra')
-
 function renderBall(ball) {
-  const sheet = SpriteSheet({
+  const sheet = window.kontra.SpriteSheet({
     frameWidth: 17,
     frameHeight: 17,
     frameMargin: 2,
@@ -13,7 +11,7 @@ function renderBall(ball) {
     }
   })
 
-  const sprite = Sprite({
+  const sprite = window.kontra.Sprite({
     x: 17 + 5 * 64,
     y: 16 + 4 * 64,
     animations: sheet.animations

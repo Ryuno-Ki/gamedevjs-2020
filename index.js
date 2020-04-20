@@ -1,5 +1,3 @@
-const kontra = require('kontra')
-
 const startMultiPlayerGame = require('./party/multi')
 const startSinglePlayerGame = require('./party/single')
 const invitePeers = require('./rtc')
@@ -7,7 +5,7 @@ const invitePeers = require('./rtc')
 ;(function () {
   'use strict';
   window.getGlobalData = function () {
-    let on = kontra.on
+    let on = window.kontra.on
     return {
       step: 1,
       model: {
@@ -16,6 +14,7 @@ const invitePeers = require('./rtc')
       },
       ready: false,
       userInteractions: [],
+      view: 'form',
       init: function () {
         console.log('Alpine ready')
         on('userInteraction', (userInteraction) => {
@@ -29,6 +28,7 @@ const invitePeers = require('./rtc')
         this.step = 1,
         this.model.name = '',
         this.model.party = null
+        this.view = 'form'
         window.localStorage.removeItem('state')
       },
       submit: function () {

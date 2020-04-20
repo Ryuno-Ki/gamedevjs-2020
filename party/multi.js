@@ -1,13 +1,3 @@
-const {
-  GameLoop,
-  init,
-  initKeys,
-  initPointer,
-  keyPressed,
-  on,
-  track
-} = require('kontra')
-
 const loadAssets = require('../assets')
 const persistChanges = require('../persistance')
 const renderGround = require('../scenes/game.scene')
@@ -20,6 +10,17 @@ const renderScore = require('../sprites/score')
 const update = require('../update')
 
 async function startMultiPlayerGame (initialState) {
+  const {
+    GameLoop,
+    init,
+    initKeys,
+    initPointer,
+    keyPressed,
+    on,
+    track
+  } = window.kontra
+
+
   const { canvas, context } = init()
 
   maybeRescale(canvas, context)

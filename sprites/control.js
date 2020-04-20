@@ -1,5 +1,3 @@
-const { pointerPressed, Sprite, SpriteSheet } = require('kontra')
-
 const resolution = {
   canvasWidth: 706,
   canvasHeight: 572,
@@ -8,7 +6,7 @@ const resolution = {
 }
 
 function renderControl (image) {
-  const sheet = SpriteSheet({
+  const sheet = window.kontra.SpriteSheet({
     frameWidth: 64,
     frameHeight: 64,
     image,
@@ -19,7 +17,7 @@ function renderControl (image) {
     }
   })
 
-  const sprite = Sprite({
+  const sprite = window.kontra.Sprite({
     x: 1 * 64,
     y: 8 * 64,
     animations: sheet.animations,

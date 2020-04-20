@@ -1,5 +1,3 @@
-const { load } = require('kontra')
-
 const assets = [
   './assets/Tilesheet/elements.png',
   './assets/Tilesheet/groundGravel.png',
@@ -8,7 +6,7 @@ const assets = [
 ]
 
 function loadAssets () {
-  return load(...assets)
+  return window.kontra.load(...assets)
 }
 
 module.exports = loadAssets

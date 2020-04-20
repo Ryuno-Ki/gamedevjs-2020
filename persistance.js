@@ -1,6 +1,7 @@
-const { on, setStoreItem } = require('kontra')
-
 function persistChanges () {
+  const on = window.kontra.on
+  const setStoreItem = window.kontra.setStoreItem
+
   const currentState = {
     player: {
       player: 'player',

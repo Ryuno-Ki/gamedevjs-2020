@@ -1,7 +1,5 @@
-const { Sprite, SpriteSheet } = require('kontra')
-
 function renderScore (image, player) {
-  const sheet = SpriteSheet({
+  const sheet = window.kontra.SpriteSheet({
     frameWidth: 64,
     frameHeight: 64,
     image,
@@ -49,7 +47,7 @@ function renderScore (image, player) {
     }
   })
 
-  const sprite = Sprite({
+  const sprite = window.kontra.Sprite({
     x: player ? 4 * 64 : 6 * 64,
     y: 0,
     animations: sheet.animations

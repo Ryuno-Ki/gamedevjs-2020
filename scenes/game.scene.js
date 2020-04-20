@@ -1,8 +1,6 @@
-const { TileEngine } = require('kontra')
-
 // Kudos https://opengameart.org/content/sports-pack-350
 function renderGround (tilesheet) {
-  let tileEngine = TileEngine({
+  let tileEngine = window.kontra.TileEngine({
     tilewidth: 64,
     tileheight: 64,
 
