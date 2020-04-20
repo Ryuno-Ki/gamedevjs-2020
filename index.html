@@ -17,7 +17,7 @@
             id="name"
             name="name"
             type="text"
-	    autofocus
+            autofocus
             required
             x-model="model.name"
             x-show="step === 1"
@@ -84,6 +84,45 @@
     </canvas>
   </div>
 
+  <div id="credits" x-show="view === 'credits'">
+    <ul>
+      <li>
+        FavIcon:
+        <a href="https://www.favicon.cc/?action=icon&file_id=16065">
+          Basketball
+        </a> by
+        <a href="https://www.favicon.cc/?action=icon_list&user_id=557">
+          seanslater
+        </a>
+        (Creative Commons, no attribution)
+      </li>
+      <li>
+        Emojis:
+        <blockquote>
+        All emojis designed by
+        <a href="https://openmoji.org/">OpenMoji</a> – the open-source emoji and icon project.
+        License: <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
+        </blockquote>
+      </li>
+      <li>
+        Font:
+        Press Start 2P by
+        <a href="http://www.zone38.net/font/#pressstart">CodeMan38</a>
+        (licensed under the
+        <a href="https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL">Open Font License</a>)
+      </li>
+      <li>
+        Art Pack:
+	<a href="https://opengameart.org/content/sports-pack-350">
+	  Sports pack (350+)
+	</a>
+	by
+	<a href="https://kenney.nl/">Kenney.nl</a>
+	(<a href="http://creativecommons.org/publicdomain/zero/1.0/">CC0</a>)
+      </li>
+    </ul>
+  </div>
+
   <div>
     <ul id="user-interactions">
       <template x-for="direction in userInteractions" :key="direction">
@@ -93,5 +132,6 @@
   </div>
   <script src="./socket.io.js"></script>
   <script src="./simple-peer/simplepeer.min.js"></script>
+  <script src="./kontra/kontra.min.js"></script>
 </body>
 </html>
