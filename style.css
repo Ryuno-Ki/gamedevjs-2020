@@ -62,3 +62,10 @@ https://fonts.google.com/specimen/VT323
 https://fonts.google.com/specimen/Geo
 https://fonts.google.com/specimen/Press+Start+2P
 */
+
+#user-interactions {
+  display: absolute;
+  left: -10000;
+  height: 1px;
+  width: 1px;
+}
