@@ -107,3 +107,4 @@ dist
 game.js
 *.zip
 .*.swp
+!dist/.gitkeep
