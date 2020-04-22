@@ -6,7 +6,10 @@
   <link rel="stylesheet" href="./style.css" />
   <script src="./alpinejs/dist/alpine.js"></script>
 </head>
-<body x-data="getGlobalData()" x-init="init()">
+<body
+  x-data="getGlobalData()"
+  x-init="init()"
+  x-on:resize.window="model.screen.width = window.innerWidth; model.screen.height = window.innerHeight">
   <div id="messages" x-bind:class="{ 'ready': ready }">
     <form id="form" method="POST" action="#" x-on:submit.prevent="submit">
       <p>Hey there!</p>
@@ -40,20 +43,24 @@
           <select
             id="party"
             name="party"
-            x-model="model.party"
+            x-model="model.chosenParty"
             x-show="step === 2">
             <option value="" selected>umm…</option>
-            <option value="single">playing alone</option>
-            <option value="multi">playing with friends</option>
+            <template x-for="party in model.parties" :key="party">
+              <option x-bind:value="party.mode" x-text="party.label"></option>
+            </template>
           </select>
-          <span x-text="model.party" x-show="step > 2"></span>
+          <span
+            x-text="model.chosenParty && model.chosenParty.label"
+            x-show="!!model.chosenParty && step > 2">
+          </span>
         </label>
 
         <button
           type="button"
-          x-bind.disabled="model.party !== ''"
+          x-bind.disabled="!model.chosenParty"
           x-on:click="nextStep(3)"
-          x-show="model.party !== '' && step < 3">
+          x-show="!model.chosenParty && step < 3">
           so ...
         </button>
         <button type="submit" x-show="step === 3">Come join me!</button>
@@ -66,12 +73,12 @@
   </div>
 
   <div id="game" x-show="ready">
-    <div x-show="model.party === 'single'">
+    <div x-show="model.chosenParty && model.chosenParty.mode === 'single'">
       Use arrow keys or 
       <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>
       to control a character.
     </div>
-    <div x-show="model.party === 'multi'">
+    <div x-show="model.chosenParty && model.chosenParty.mode === 'multi'">
       Use arrow keys to control your character.
     </div>
 
@@ -113,12 +120,12 @@
       </li>
       <li>
         Art Pack:
-	<a href="https://opengameart.org/content/sports-pack-350">
-	  Sports pack (350+)
-	</a>
-	by
-	<a href="https://kenney.nl/">Kenney.nl</a>
-	(<a href="http://creativecommons.org/publicdomain/zero/1.0/">CC0</a>)
+        <a href="https://opengameart.org/content/sports-pack-350">
+          Sports pack (350+)
+        </a>
+        by
+        <a href="https://kenney.nl/">Kenney.nl</a>
+        (<a href="http://creativecommons.org/publicdomain/zero/1.0/">CC0</a>)
       </li>
     </ul>
   </div>

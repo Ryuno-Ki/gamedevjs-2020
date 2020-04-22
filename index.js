@@ -7,10 +7,22 @@ const invitePeers = require('./rtc')
   window.getGlobalData = function () {
     let on = window.kontra.on
     return {
+      device: 'unknown',
       step: 1,
       model: {
+        chosenParty: null,
         name: '',
-        party: null
+        parties: [{
+          mode: 'single',
+          label: 'playing alone'
+        }, {
+          mode: 'multi',
+          label: 'playing with friends'
+        }],
+        screen: {
+          height: window.innerHeight,
+          width: window.innerWidth
+        }
       },
       ready: false,
       userInteractions: [],
@@ -27,7 +39,7 @@ const invitePeers = require('./rtc')
       reset: function () {
         this.step = 1,
         this.model.name = '',
-        this.model.party = null
+        this.model.chosenParty = null
         this.view = 'form'
         window.localStorage.removeItem('state')
       },
@@ -37,7 +49,9 @@ const invitePeers = require('./rtc')
 
           const initialState = {
             name: this.model.name,
-            party: this.model.party
+            party: this.model.chosenParty.mode,
+            screenHeight: this.model.screen.height,
+            screenWidth: this.model.screen.width
           }
           window.localStorage.setItem('state', JSON.stringify(initialState))
 
