@@ -13,62 +13,52 @@
   <div id="messages" x-bind:class="{ 'ready': ready }">
     <form id="form" method="POST" action="#" x-on:submit.prevent="submit">
       <p>Hey there!</p>
-      <div>
-        <label for="name">
-          My name is
-          <input
-            id="name"
-            name="name"
-            type="text"
-            autofocus
-            required
-            x-model="model.name"
-            x-show="step === 1"
-            />
-          <span x-text="model.name" x-show="step > 1"></span>
-        </label>
+      <label for="name">
+        My name is
+        <input
+          id="name"
+          name="name"
+          type="text"
+          autofocus
+          required
+          x-model="model.name"
+          x-on:keyup.debounce.750ms="step = 2"
+          x-show="step === 1"
+          />
+        <span x-text="model.name" x-show="step > 1"></span>
+      </label>
+      and
+      <label for="party" x-show="step > 1">
+        today I feel like
+        <select
+          id="party"
+          name="party"
+          x-model="model.chosenParty"
+          x-on:change.debounce.750ms="step = 3"
+          x-show="step === 2">
+          <option value="" selected>umm…</option>
+          <template x-for="party in model.parties" :key="party">
+            <option x-bind:value="party.mode" x-text="party.label"></option>
+          </template>
+        </select>
+        <span
+          x-show="model.chosenParty === 'single' && step > 2">
+          playing alone
+        </span>
+        <span
+          x-show="model.chosenParty === 'multi' && step > 2">
+          playing with friends
+        </span>
+        <span
+          x-show="model.chosenParty === 'visitor' && step > 2">
+          watching a game
+        </span>.
+      </label>
 
-        <button
-          type="button"
-          x-bind.disabled="model.name !== 'name'"
-          x-on:click="nextStep(2)"
-          x-show="step < 2">
-          and ...
-        </button>
-        <span x-show="step > 1">and ...</span>
-      </div>
-      <div x-show="step > 1">
-        <label for="party">
-          Today I feel like
-          <select
-            id="party"
-            name="party"
-            x-model="model.chosenParty"
-            x-show="step === 2">
-            <option value="" selected>umm…</option>
-            <template x-for="party in model.parties" :key="party">
-              <option x-bind:value="party.mode" x-text="party.label"></option>
-            </template>
-          </select>
-          <span
-            x-text="model.chosenParty && model.chosenParty.label"
-            x-show="!!model.chosenParty && step > 2">
-          </span>
-        </label>
-
-        <button
-          type="button"
-          x-bind.disabled="!model.chosenParty"
-          x-on:click="nextStep(3)"
-          x-show="!model.chosenParty && step < 3">
-          so ...
-        </button>
-        <button type="submit" x-show="step === 3">Come join me!</button>
-
-        <button type="button" x-on:click="reset()" x-show="step > 3">
-          Start a new game
-        </button>
-      </div>
+      <button type="submit" x-show="step === 3">Come join me!</button>
+      <button type="button" x-on:click="reset()" x-show="step > 3">
+        Start a new game
+      </button>
     </form>
   </div>
 
@@ -84,10 +74,8 @@
 
     <canvas
       id="content"
-      width="706"
-      height="572"
-      x-on:wheel.prevent=""
-      x-on:mousewheel.prevent="">
+      x-bind:width="model.canvas.width"
+      x-bind:height="model.canvas.height">
     </canvas>
   </div>
 
