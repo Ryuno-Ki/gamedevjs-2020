@@ -1,4 +1,4 @@
-function persistChanges () {
+function persistChanges (gameMode) {
   const on = window.kontra.on
   const setStoreItem = window.kontra.setStoreItem
 
