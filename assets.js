@@ -1,12 +1,27 @@
-const assets = [
-  './assets/Tilesheet/elements.png',
-  './assets/Tilesheet/groundGravel.png',
-  './assets/Spritesheet/sheet_characters.png',
-  './assets/Spritesheet/sheet_charactersEquipment.png'
-]
+function loadAssets (gameMode) {
+  const modeMap = {
+    'single': [
+      './assets/Tilesheet/elements.png',
+      './assets/Tilesheet/groundGravel.png',
+      './assets/Spritesheet/sheet_characters.png',
+      './assets/Spritesheet/sheet_charactersEquipment.png'
+    ],
+    'multi': [
+      './assets/Tilesheet/elements.png',
+      './assets/Tilesheet/groundGravel.png',
+      './assets/Spritesheet/sheet_characters.png',
+      './assets/Spritesheet/sheet_charactersEquipment.png'
+    ],
+    'visitor': [
+      './assets/Tilesheet/elements.png',
+      './assets/Tilesheet/groundGravel.png',
+      './assets/Spritesheet/sheet_characters.png',
+      './assets/Spritesheet/sheet_charactersEquipment.png',
+      './emojis.png'
+    ]
+  }
 
-function loadAssets () {
-  return window.kontra.load(...assets)
+  return window.kontra.load(...modeMap[ gameMode ])
 }
 
 module.exports = loadAssets
