@@ -1,4 +1,4 @@
-function renderEmoji (image, name) {
+function renderEmoji (image, name, visitorName) {
   const animationsMap = {
     'left': 0,
     'right': 1,
@@ -6,6 +6,15 @@ function renderEmoji (image, name) {
     'down': 4,
     'ball': 9,
     'goal': 24
+  }
+
+  const nameMap = {
+    left: 0,
+    right: 1,
+    up: 2,
+    down: 3,
+    ball: 4,
+    goal: 5
   }
 
   const sheet = window.kontra.SpriteSheet({
@@ -19,19 +28,13 @@ function renderEmoji (image, name) {
     }
   })
 
-  const nameMap = {
-    left: 0,
-    right: 1,
-    up: 2,
-    down: 3,
-    ball: 4,
-    goal: 5
-  }
-
   const sprite = window.kontra.Sprite({
     x: nameMap[ name ] * 64,
     y: 8 * 64,
-    animations: sheet.animations
+    animations: sheet.animations,
+    onUp: function () {
+      window.kontra.emit('Visitor', { emoji: name, visitor: visitorName })
+    }
   })
 
   return sprite

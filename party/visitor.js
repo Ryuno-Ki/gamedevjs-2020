@@ -22,7 +22,7 @@ async function startVisitorGame (initialState) {
   const { canvas, context } = init()
 
   initPointer()
-  persistChanges(initialState.party)
+  persistChanges(initialState.party, initialState.name)
 
   const assets = await loadAssets(initialState.party)
   const [ basketImage, groundImage, playerImage, ballImage, emojisImage ] = assets
@@ -42,7 +42,7 @@ async function startVisitorGame (initialState) {
     'down',
     'ball',
     'goal'
-  ].map((name) => renderEmoji(emojisImage, name))
+  ].map((name) => renderEmoji(emojisImage, name, initialState.name))
 
   tileEngine.addObject(player)
   tileEngine.addObject(opponent)
@@ -52,6 +52,8 @@ async function startVisitorGame (initialState) {
   tileEngine.addObject(playerScore)
   tileEngine.addObject(opponentScore)
   emojis.forEach((emoji) => tileEngine.addObject(emoji))
+
+  emojis.forEach((emoji) => track(emoji))
 
   let loop = GameLoop({
     update: () => update({
