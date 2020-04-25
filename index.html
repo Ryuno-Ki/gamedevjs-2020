@@ -34,7 +34,7 @@
           id="party"
           name="party"
           x-model="model.chosenParty"
-          x-on:change.debounce.750ms="step = 3"
+          x-on:change.debounce.750ms="handlePartySelection()"
           x-show="step === 2">
           <option value="" selected>umm…</option>
           <template x-for="party in model.parties" :key="party">
@@ -43,17 +43,51 @@
         </select>
         <span
           x-show="model.chosenParty === 'single' && step > 2">
-          playing alone
+          playing alone.
         </span>
         <span
-          x-show="model.chosenParty === 'multi' && step > 2">
-          playing with friends
+          x-show="model.chosenParty === 'initiator' && step > 2">
+          playing with friends.
+        </span>
+        <span
+          x-show="model.chosenParty === 'joiner' && step > 2">
+          joining a session.
         </span>
         <span
           x-show="model.chosenParty === 'visitor' && step > 2">
-          watching a game
-        </span>.
+          watching a game.
+        </span>
       </label>
+
+      <fieldset x-show="model.chosenParty === 'joiner' && step > 2">
+        <legend>Choose your session</legend>
+        <template x-for="session in sessions" :key="session">
+          <label>
+            <input
+	      type="radio"
+	      x-bind:value="session.key"
+	      x-model="model.chosenSession" />
+            <span x-text="session.initiator"></span>
+          </label>
+        </template>
+        <div x-show="sessions.length === 0">
+          There is currently no session to choose from.
+          Try again later.
+        </div>
+      </fieldset>
+      <fieldset x-show="model.chosenParty === 'visitor' && step > 2">
+        <legend>Choose your session</legend>
+        <template x-for="session in sessions" :key="session">
+          <label>
+            <input type="radio" name="session" x-bind:value="session" />
+            <span x-text="session"></span>
+          </label>
+        </template>
+        <div x-show="sessions.length === 0">
+          There is currently no session to choose from.
+          Try again later.
+        </div>
+      </fieldset>
 
       <button type="submit" x-show="step === 3">Come join me!</button>
       <button type="button" x-on:click="reset()" x-show="step > 3">
@@ -68,7 +102,10 @@
       <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>
       to control a character.
     </div>
-    <div x-show="model.chosenParty && model.chosenParty.mode === 'multi'">
+    <div x-show="model.chosenParty && model.chosenParty.mode === 'initiator'">
+      Use arrow keys to control your character.
+    </div>
+    <div x-show="model.chosenParty && model.chosenParty.mode === 'joiner'">
       Use arrow keys to control your character.
     </div>
 

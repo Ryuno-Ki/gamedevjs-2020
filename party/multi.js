@@ -15,23 +15,23 @@ async function startMultiPlayerGame (initialState) {
     init,
     initKeys,
     initPointer,
-    keyPressed,
     on,
     track
   } = window.kontra
 
-
   const { canvas, context } = init()
 
+  /*
   maybeRescale(canvas, context)
   canvas.onwheel = (event) => event.preventDefault()
   canvas.onmousewheel = (event) => event.preventDefault()
+  */
 
   initKeys()
   initPointer()
-  persistChanges()
+  persistChanges(initialState.party, initialState.name)
 
-  const assets = await loadAssets()
+  const assets = await loadAssets(initialState.party)
   const [ basketImage, groundImage, playerImage, ballImage ] = assets
 
   const tileEngine = renderGround(groundImage)
@@ -89,6 +89,7 @@ async function startMultiPlayerGame (initialState) {
   return Promise.resolve(true)
 }
 
+/*
 function maybeRescale (canvas, context) {
   const windowWidth = window.innerWidth
   const windowHeight = window.innerHeight
@@ -107,5 +108,6 @@ function maybeRescale (canvas, context) {
   context.imageSmoothingEnabled = false
   context.scale(scaleWidth, scaleHeight)
 }
+*/
 
 module.exports = startMultiPlayerGame

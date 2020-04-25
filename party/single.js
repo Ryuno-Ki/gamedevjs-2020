@@ -1,6 +1,5 @@
 const loadAssets = require('../assets')
 const persistChanges = require('../persistance')
-const invitePeers = require('../rtc')
 const renderGround = require('../scenes/game.scene')
 const renderBall = require('../sprites/ball')
 const renderBasket = require('../sprites/basket')
@@ -16,7 +15,6 @@ async function startSinglePlayerGame (initialState) {
     init,
     initKeys,
     initPointer,
-    keyPressed,
     on,
     track
   } = window.kontra
@@ -26,9 +24,9 @@ async function startSinglePlayerGame (initialState) {
   // maybeRescale(canvas, context)
   initKeys()
   initPointer()
-  persistChanges()
+  persistChanges(initialState.party, initialState.name)
 
-  const assets = await loadAssets()
+  const assets = await loadAssets(initialState.party)
   const [ basketImage, groundImage, playerImage, ballImage ] = assets
 
   const tileEngine = renderGround(groundImage)
@@ -80,6 +78,7 @@ async function startSinglePlayerGame (initialState) {
   return Promise.resolve(true)
 }
 
+/*
 function maybeRescale (canvas, context) {
   const windowWidth = window.innerWidth
   const windowHeight = window.innerHeight
@@ -98,5 +97,6 @@ function maybeRescale (canvas, context) {
   context.imageSmoothingEnabled = false
   context.scale(scaleWidth, scaleHeight)
 }
+*/
 
 module.exports = startSinglePlayerGame

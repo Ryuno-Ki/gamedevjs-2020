@@ -6,7 +6,13 @@ function loadAssets (gameMode) {
       './assets/Spritesheet/sheet_characters.png',
       './assets/Spritesheet/sheet_charactersEquipment.png'
     ],
-    'multi': [
+    'initiator': [
+      './assets/Tilesheet/elements.png',
+      './assets/Tilesheet/groundGravel.png',
+      './assets/Spritesheet/sheet_characters.png',
+      './assets/Spritesheet/sheet_charactersEquipment.png'
+    ],
+    'joiner': [
       './assets/Tilesheet/elements.png',
       './assets/Tilesheet/groundGravel.png',
       './assets/Spritesheet/sheet_characters.png',
