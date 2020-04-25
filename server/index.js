@@ -19,7 +19,6 @@ app.use('/', express.static(DIST_PATH))
 io.on('connection', (socket) => {
   console.log('Socket connection established')
   socket.broadcast.emit('connect:new')
-
   socket.on('signal', (data) => {
     socket.broadcast.emit('signal', data)
   })
@@ -29,7 +28,7 @@ io.on('connection', (socket) => {
     const sessionId = nanoid()
     session[ sessionId ] = [ initiator ]
     socket.emit('group:opened', sessionId)
-    console.log('Sessions', JSON.stringify(session, null, 2))
+    console.log('Sessions', session)
   })
 
   socket.on('group:available', (data) => {
@@ -40,6 +39,10 @@ io.on('connection', (socket) => {
   socket.on('group:join', (data) => {
     const { sessionId, name } = data
     session[ sessionId ].push(name)
+    const newSession = {
+      [ sessionId ]: session[ sessionId ]
+    }
+    socket.broadcast.emit('group:joined', JSON.stringify(newSession))
   })
 })
 
