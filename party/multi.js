@@ -32,7 +32,16 @@ async function startMultiPlayerGame (initialState) {
   persistChanges(initialState.party, initialState.name)
 
   const assets = await loadAssets(initialState.party)
-  const [ basketImage, groundImage, playerImage, ballImage ] = assets
+  const [
+    basketImage,
+    groundImage,
+    playerImage,
+    ballImage,
+    crowdSound,
+    dribblingSound,
+    throwSound,
+    whistleSound
+  ] = assets
 
   const tileEngine = renderGround(groundImage)
   const control = renderControl(groundImage)
@@ -61,6 +70,8 @@ async function startMultiPlayerGame (initialState) {
     opponent.y -= dy
   })
 
+  handleBackgroundMusic(crowdSound)
+
   let loop = GameLoop({
     update: () => update({
       canvas,
@@ -71,7 +82,8 @@ async function startMultiPlayerGame (initialState) {
       playerBasket,
       opponentBasket,
       playerScore,
-      opponentScore
+      opponentScore,
+      playerName: initialState.name
     }),
     render: () => {
       tileEngine.render()
@@ -86,6 +98,7 @@ async function startMultiPlayerGame (initialState) {
     }
   })
   loop.start()
+  whistleSound.play()
   return Promise.resolve(true)
 }
 
@@ -109,5 +122,30 @@ function maybeRescale (canvas, context) {
   context.scale(scaleWidth, scaleHeight)
 }
 */
+
+function handleBackgroundMusic (crowdSound) {
+  // Kudos: https://stackoverflow.com/a/22446616
+  // and https://stackoverflow.com/a/32841351
+  crowdSound.addEventListener('timeupdate', function () {
+    const playback = this.currentTime / this.duration
+    if (playback < 0.5) {
+      this.volume = 2 * playback
+    } else if (playback > 0.5) {
+      this.volume = 2 - 2 * playback
+    } else {
+      this.volume = 1
+    }
+  })
+  crowdSound.loop = true
+  crowdSound.play()
+
+  window.kontra.on('backgroundMusic:toggle', (newState) => {
+    if (newState) {
+      crowdSound.play()
+    } else {
+      crowdSound.pause()
+    }
+  })
+}
 
 module.exports = startMultiPlayerGame

@@ -65,7 +65,8 @@ async function startVisitorGame (initialState) {
       playerBasket,
       opponentBasket,
       playerScore,
-      opponentScore
+      opponentScore,
+      playerName: initialState.name
     }),
     render: () => {
       tileEngine.render()

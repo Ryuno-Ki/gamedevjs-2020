@@ -40,6 +40,8 @@ const copyOptions = {
   }, {
     src: 'node_modules/simple-peer/simplepeer.min.js', dest: 'dist/',
   }, {
+    src: 'assets/**/*.mp3', dest: 'dist/assets/'
+  }, {
     src: 'assets/**/*.png', dest: 'dist/assets/'
   }]
 }
