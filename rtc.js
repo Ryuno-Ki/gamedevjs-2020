@@ -19,7 +19,7 @@ function invitePeer (initialState) {
     window.kontra.emit('group:pending', data)
   })
   socket.on('group:joined', (data) => {
-    setupWebRTC(initialState.party === 'initiator', socket)
+    setupWebRTC(initialState.party === 'initiator', socket, initialState)
   })
 
   const handler = {
@@ -37,7 +37,7 @@ function invitePeer (initialState) {
   return Promise.resolve(handler)
 }
 
-function setupWebRTC (isInitiator, socket) {
+function setupWebRTC (isInitiator, socket, initialState) {
   const peer = new SimplePeer({
     initiator: isInitiator
   })
@@ -57,6 +57,7 @@ function setupWebRTC (isInitiator, socket) {
   peer.on('connect', () => {
     console.log('WebRTC CONNECT')
     peer.send(initialState)
+    window.kontra.emit('ready')
   })
 
   peer.on('data', (data) => {

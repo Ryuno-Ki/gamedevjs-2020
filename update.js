@@ -7,9 +7,10 @@ function update ({
   playerBasket,
   opponentBasket,
   playerScore,
-  opponentScore
+  opponentScore,
+  playerName
 }) {
-  movePlayer({ player, canvas, tileEngine })
+  movePlayer({ player, canvas, tileEngine, playerName })
   moveOpponent(opponent, canvas)
   moveBall({
     player,
@@ -22,7 +23,7 @@ function update ({
   })
 }
 
-function movePlayer ({ player, canvas, tileEngine }) {
+function movePlayer ({ player, canvas, tileEngine, playerName }) {
   const emit = window.kontra.emit
   const keyPressed = window.kontra.keyPressed
 
@@ -38,7 +39,7 @@ function movePlayer ({ player, canvas, tileEngine }) {
     tileEngine.sx -= dx
     emit(
       'userInteraction',
-      { player: 'player', direction: 'left', dx: -dx, dy: 0 }
+      { player: playerName, direction: 'left', dx: -dx, dy: 0 }
     )
   }
 
@@ -49,7 +50,7 @@ function movePlayer ({ player, canvas, tileEngine }) {
     tileEngine.sx += dx
     emit(
       'userInteraction',
-      { player: 'player', direction: 'right', dx: dx, dy: 0 }
+      { player: playerName, direction: 'right', dx: dx, dy: 0 }
     )
   }
 
@@ -59,7 +60,7 @@ function movePlayer ({ player, canvas, tileEngine }) {
     tileEngine.sy -= dy
     emit(
       'userInteraction',
-      { player: 'player', direction: 'up', dx: 0, dy: -dy }
+      { player: playerName, direction: 'up', dx: 0, dy: -dy }
     )
   }
 
@@ -69,7 +70,7 @@ function movePlayer ({ player, canvas, tileEngine }) {
     tileEngine.sy += dy
     emit(
       'userInteraction',
-      { player: 'player', direction: 'down', dx: 0, dy: dy }
+      { player: playerName, direction: 'down', dx: 0, dy: dy }
     )
   }
 
