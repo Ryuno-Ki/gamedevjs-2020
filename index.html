@@ -10,8 +10,31 @@
   x-data="getGlobalData()"
   x-init="init()"
   x-on:resize.window="model.screen.width = window.innerWidth; model.screen.height = window.innerHeight">
-  <div id="messages" x-bind:class="{ 'ready': ready }">
-    <form id="form" method="POST" action="#" x-on:submit.prevent="submit">
+
+  <div id="messages" x-bind:class="{ 'ready': ready, 'form': view === 'form', 'game': view === 'game' }">
+    <nav>
+      <ul>
+        <li>
+	  <a href="#" x-on:click="view = 'form'">New Game</a>
+	</li>
+	<li>
+	  <a href="#" x-on:click="view = 'rules'">How to play</a>
+	</li>
+        <li>
+	  <a href="#" x-on:click="view = 'credits'">Credits</a>
+	</li>
+	<li>
+	  <a href="#" x-on:click="view = 'about'">About this game</a>
+	</li>
+      </ul>
+    </nav>
+
+    <form
+      id="form"
+      method="POST"
+      action="#"
+      x-on:submit.prevent="submit"
+      x-show="view === 'form'">
       <p>Hey there!</p>
       <label for="name">
         My name is
@@ -65,6 +88,7 @@
           <label>
             <input
 	      type="radio"
+	      name="session"
 	      x-bind:value="session.key"
 	      x-model="model.chosenSession" />
             <span x-text="session.initiator"></span>
@@ -79,8 +103,12 @@
         <legend>Choose your session</legend>
         <template x-for="session in sessions" :key="session">
           <label>
-            <input type="radio" name="session" x-bind:value="session" />
-            <span x-text="session"></span>
+            <input
+	      type="radio"
+	      name="session"
+	      x-bind:value="session"
+	      x-model="model.chosenSession" />
+            <span x-text="session.initiator"></span>
           </label>
         </template>
         <div x-show="sessions.length === 0">
@@ -89,14 +117,58 @@
         </div>
       </fieldset>
 
+      <span x-show="step === 3">
+        playing a session with <span x-text="getSessionMembers()"></span>.
+      </span>
       <button type="submit" x-show="step === 3">Come join me!</button>
-      <button type="button" x-on:click="reset()" x-show="step > 3">
-        Start a new game
-      </button>
     </form>
   </div>
 
-  <div id="game" x-show="ready">
+  <div id="game" x-show="view === 'game'">
+    <button type="button" x-on:click="reset()" x-show="step > 3">
+      Start a new game
+    </button>
+    <div>
+      <fieldset>
+        <legend>Settings</legend>
+	<label>
+	  <input
+	    type="checkbox"
+	    name="background-music"
+	    value="background-music"
+	    x-on:change="toggleBackgroundMusic()"
+	    x-bind:checked="model.backgroundMusic"
+	    x-model="model.backgroundMusic" />
+	    Mute background music
+	</label>
+      </fieldset>
+    </div>
+    <span x-show="!ready">Waiting for others to join</span>
+
+    <div x-show="ready">
+      <canvas
+        id="content"
+        x-bind:width="model.canvas.width"
+        x-bind:height="model.canvas.height">
+      </canvas>
+
+      <div>
+        <ul id="user-interactions">
+          <template x-for="direction in userInteractions" :key="direction">
+            <li class="user-interaction" x-text="direction"></li>
+          </template>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="rules" x-show="view === 'rules'">
+    <p>
+      This game is meant to be played as multiplayer.
+      Neither you, nor your opponent will see each other or the ball.
+      But visitors do. They can give you instructions via emojis.
+      But you don't know, whom they're cheering on.
+    </p>
     <div x-show="model.chosenParty && model.chosenParty.mode === 'single'">
       Use arrow keys or 
       <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>
@@ -108,12 +180,11 @@
     <div x-show="model.chosenParty && model.chosenParty.mode === 'joiner'">
       Use arrow keys to control your character.
     </div>
-
-    <canvas
-      id="content"
-      x-bind:width="model.canvas.width"
-      x-bind:height="model.canvas.height">
-    </canvas>
+    <p>
+      Sadly, this submission did not turn out to be as stable as I hoped for.
+      Therefore, a session must be started first before others can join it.
+      Also, you will likely need someone acting as a visitor.
+    </p>
   </div>
 
   <div id="credits" x-show="view === 'credits'">
@@ -152,16 +223,44 @@
         <a href="https://kenney.nl/">Kenney.nl</a>
         (<a href="http://creativecommons.org/publicdomain/zero/1.0/">CC0</a>)
       </li>
+      <li>
+	This game uses these sounds from freesound:
+	<a href="https://freesound.org/people/sonidistapo/sounds/339974/">
+	  Basketball Players Playing
+	</a> by 
+	<a href="https://freesound.org/people/sonidistapo/">
+	  sonidistapo
+	</a>
+	(<a href="http://creativecommons.org/publicdomain/zero/1.0/">CC0</a>)
+	and
+	<a href="https://freesound.org/people/phillyfan972/sounds/412160/">
+	  Fans at Basketball Game (Crowd)
+	</a> by
+	<a href="https://freesound.org/people/phillyfan972/">
+	  phillyfan972
+	</a>
+	(<a href="http://creativecommons.org/publicdomain/zero/1.0/">CC0</a>)
+      </li>
     </ul>
   </div>
 
-  <div>
-    <ul id="user-interactions">
-      <template x-for="direction in userInteractions" :key="direction">
-        <li class="user-interaction" x-text="direction"></li>
-      </template>
-    </ul>
+  <div id="about" x-show="view === 'about'">
+    <p>
+      This page was created as a submission for the
+      <a href="https://itch.io/jam/gamedevjs-2020">GameDevJS 2020 Game Jam</a>.
+    </p>
+    <p>
+      You can find
+      <a href="https://github.com/Ryuno-Ki/gamedevjs-2020">its source code on GitHub</a>.
+      It is licensed under GPLv3 or higher.
+    </p>
+    <p>
+      The inspiration stems from <a href="https://xkcd.com/2291/">a XKCD comic</a>
+      <img src="https://imgs.xkcd.com/comics/new_sports_system.png" alt="New Sports System by Randall Munroe" />
+      (<a href="http://creativecommons.org/licenses/by-nc/2.5/">CC BY-NC</a>)
+    </p>
   </div>
+
   <script src="./socket.io.js"></script>
   <script src="./simple-peer/simplepeer.min.js"></script>
   <script src="./kontra/kontra.min.js"></script>

@@ -11,6 +11,17 @@ body {
   max-width: 100vw;
 }
 
+nav ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  place-content: space-around;
+  list-style: none;
+}
+
+nav ul li {
+  margin: 1em;
+}
+
 button,
 kbd {
   font-family: GameFont, serif;
@@ -18,8 +29,18 @@ kbd {
 
 #messages {
   display: flex;
-  min-height: 95vh;
+  flex-direction: column;
   place-content: center;
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+
+#messages[x-cloak] {
+  opacity: 0;
+}
+
+#messages.form {
+  min-height: 95vh;
 }
 
 #messages.ready {
@@ -58,11 +79,24 @@ kbd {
   height: 572px;
 }
 
+#about,
+#rules,
+#credits {
+  margin: 0 1em;
+}
+
 /* Kudos https://tympanus.net/Tutorials/NaturalLanguageForm/ */
 input {
   padding: 0;
   border: 0;
   border-bottom: 1px solid currentColor;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1em auto;
 }
 
 /*

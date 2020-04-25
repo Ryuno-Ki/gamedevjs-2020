@@ -11,12 +11,14 @@ const invitePeers = require('./rtc')
       device: 'unknown',
       step: 1,
       model: {
+	backgroundMusic: false,
         canvas: {
           width: 11 * 64,
           height: 9 * 64
         },
         chosenParty: '',
-	chosenSession: '',
+        chosenSession: '',
+        chosenSessionInitiator: '',
         name: '',
         parties: [{
           mode: 'single',
@@ -24,9 +26,9 @@ const invitePeers = require('./rtc')
         }, {
           mode: 'initiator',
           label: 'playing with friends'
-	}, {
-	  mode: 'joiner',
-	  label: 'joining a session'
+        }, {
+          mode: 'joiner',
+          label: 'joining a session'
         }, {
           mode: 'visitor',
           label: 'watching a game'
@@ -40,7 +42,7 @@ const invitePeers = require('./rtc')
       ready: false,
       sessions: [],
       userInteractions: [],
-      view: 'form',
+      view: '',
       getInitialState: function () {
         return {
           name: this.model.name,
@@ -49,19 +51,22 @@ const invitePeers = require('./rtc')
           screenWidth: this.model.screen.width
         }
       },
+      getSessionMembers: function () {
+        return ''
+      },
       getSessions: function () {
         const initialState = this.getInitialState()
         return invitePeers(initialState)
-	  .then((handler) => {
-	    this.handler = handler
-	    if (initialState.party === 'initiator') {
-	      return handler.openSession()
-	    }
-	    if (['visitor', 'joiner'].includes(initialState.party)) {
-	      return handler.getSessions()
-	    }
-	    return Promise.resolve(true)
-	  })
+          .then((handler) => {
+            this.handler = handler
+            if (initialState.party === 'initiator') {
+              return handler.openSession()
+            }
+            if (['visitor', 'joiner'].includes(initialState.party)) {
+              return handler.getSessions()
+            }
+            return Promise.resolve(true)
+          })
       },
       handler: null,
       handleMobileDevice: function () {
@@ -74,9 +79,12 @@ const invitePeers = require('./rtc')
       },
       handlePartySelection: function () {
         this.getSessions()
-	  .then(() => {
-	    this.step = 3
-	  })
+          .then(() => {
+	    if (this.model.chosenSession) {
+	      this.getSessionMembers()
+	    }
+            this.step = 3
+          })
       },
       handleSession: function () {
         const search = window.location.search
@@ -95,16 +103,20 @@ const invitePeers = require('./rtc')
         }
       },
       init: function () {
-        console.log('Alpine ready')
+        console.log('Alpine ready', this.view)
         this.reset()
         on('userInteraction', (userInteraction) => {
           this.userInteractions.push(userInteraction.direction)
         })
         on('group:pending', (data) => {
-	  const sessions = JSON.parse(data)
-	  Object.keys(sessions).forEach((key) => {
-	    this.sessions.push({ key, initiator: sessions[ key ][ 0 ] })
-	  })
+          const sessions = JSON.parse(data)
+          Object.keys(sessions).forEach((key) => {
+            this.sessions.push({ key, initiator: sessions[ key ][ 0 ] })
+          })
+        })
+        on('ready', () => {
+          this.ready = true
+          this.scrollToStartPosition()
         })
       },
       isMobileDevice: function () {
@@ -120,9 +132,11 @@ const invitePeers = require('./rtc')
         this.ready = false
         this.step = 1,
         this.model.name = '',
+	this.model.backgroundMusic = false
         this.model.chosenParty = ''
-	this.model.chosenSession = ''
-        this.view = 'form'
+        this.model.chosenSession = ''
+        this.model.chosenSessionInitiator = ''
+        this.view = ''
         window.localStorage.removeItem('actions')
         window.localStorage.removeItem('state')
         this.handleMobileDevice()
@@ -137,6 +151,7 @@ const invitePeers = require('./rtc')
       submit: function () {
         if (this.validates()) {
           this.step = 4
+	  this.view = 'game'
 
           const initialState = this.getInitialState()
           window.localStorage.setItem('state', JSON.stringify(initialState))
@@ -144,35 +159,23 @@ const invitePeers = require('./rtc')
           if (this.model.chosenParty === 'initiator') {
             invitePeers(initialState)
             startMultiPlayerGame(initialState)
-              .then(() => {
-                this.ready = true
-                this.scrollToStartPosition()
-              })
-	  } else if (this.model.chosenParty === 'joiner') {
+          } else if (this.model.chosenParty === 'joiner') {
             invitePeers(initialState)
 	    this.handler.joinSession(this.model.chosenSession, initialState.name)
             startMultiPlayerGame(initialState)
-              .then(() => {
-                this.ready = true
-                this.scrollToStartPosition()
-              })
           } else if (this.model.chosenParty === 'single') {
             startSinglePlayerGame(initialState)
-              .then(() => {
-                this.ready = true
-                this.scrollToStartPosition()
-              })
           } else {
             invitePeers(initialState)
+	    this.handler.joinSession(this.model.chosenSession, initialState.name)
             startVisitorGame(initialState)
-              .then(() => {
-                this.ready = true
-                this.scrollToStartPosition()
-              })
           }
         } else {
           console.warn('Form is not valid!')
         }
+      },
+      toggleBackgroundMusic () {
+        window.kontra.emit('backgroundMusic:toggle', this.model.backgroundMusic)
       },
       validates: function () {
         return this.step === 3 && this.model && this.model.chosenParty !== ''
