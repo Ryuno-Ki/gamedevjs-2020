@@ -1,6 +1,6 @@
 {
   "name": "gamedevjs-2020",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Submission for GameDevJS 2020 on Itch.io",
   "main": "index.js",
   "scripts": {
