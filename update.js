@@ -10,7 +10,7 @@ function update ({
   opponentScore,
   playerName,
   dribblingSound,
-  throwSound
+  throwSound, whistleSound
 }) {
   movePlayer({ player, canvas, tileEngine, playerName })
   moveOpponent({ opponent, canvas })
@@ -23,7 +23,8 @@ function update ({
     playerScore,
     opponentScore,
     dribblingSound,
-    throwSound
+    throwSound,
+    whistleSound
   })
 
   window.kontra.on('score', () => {
@@ -132,7 +133,8 @@ function moveBall ({
   playerScore,
   opponentScore,
   dribblingSound,
-  throwSound
+  throwSound,
+  whistleSound
 }) {
   const dpx = player.x - ball.x
   const dpy = player.y - ball.y
@@ -155,7 +157,7 @@ function moveBall ({
   if (playerBasket.collidesWith(ball) && opponent.collidesWith(ball)) {
     const currentScore = window.kontra.getStoreItem('score')
     const newScore = currentScore.opponent - 0 + 1
-    updateScore(opponentScore, `score${newScore}`, throwSound)
+    updateScore(opponentScore, `score${newScore}`, throwSound, whistleSound)
     window.kontra.setStoreItem('score', {
       ...currentScore,
       'opponent': newScore
@@ -165,7 +167,7 @@ function moveBall ({
   if (opponentBasket.collidesWith(ball) && player.collidesWith(ball)) {
     const currentScore = window.kontra.getStoreItem('score')
     const newScore = currentScore.player - 0 + 1
-    updateScore(playerScore, `score${newScore}`, throwSound)
+    updateScore(playerScore, `score${newScore}`, throwSound, whistleSound)
     window.kontra.setStoreItem('score', {
       ...currentScore,
       'player': newScore
@@ -178,12 +180,15 @@ function moveBall ({
   ball.update()
 }
 
-function updateScore (score, animation, throwSound) {
+function updateScore (score, animation, throwSound, whistleSound) {
   score.playAnimation(animation)
   if (throwSound) {
     throwSound.play()
   }
   window.kontra.emit('score')
+  if (whistleSound) {
+    whistleSound.play()
+  }
 }
 
 module.exports = update

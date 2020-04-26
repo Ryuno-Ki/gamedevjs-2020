@@ -74,7 +74,8 @@ async function startVisitorGame (initialState) {
       opponentScore,
       playerName: initialState.name,
       dribblingSound: null,
-      throwSound: null
+      throwSound: null,
+      whistleSound: null
     }),
     render: () => {
       tileEngine.render()

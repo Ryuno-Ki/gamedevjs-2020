@@ -86,7 +86,8 @@ async function startMultiPlayerGame (initialState) {
       opponentScore,
       playerName: initialState.name,
       dribblingSound,
-      throwSound
+      throwSound,
+      whistleSound
     }),
     render: () => {
       tileEngine.render()

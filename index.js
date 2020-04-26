@@ -12,6 +12,7 @@ const invitePeers = require('./rtc')
       step: 1,
       model: {
 	backgroundMusic: false,
+	backgroundSound: false,
         canvas: {
           width: 11 * 64,
           height: 9 * 64
@@ -133,6 +134,7 @@ const invitePeers = require('./rtc')
         this.step = 1,
         this.model.name = '',
 	this.model.backgroundMusic = false
+	this.model.backgroundSound = false
         this.model.chosenParty = ''
         this.model.chosenSession = ''
         this.model.chosenSessionInitiator = ''
@@ -181,6 +183,9 @@ const invitePeers = require('./rtc')
       },
       toggleBackgroundMusic () {
         window.kontra.emit('backgroundMusic:toggle', this.model.backgroundMusic)
+      },
+      toggleBackgroundSound () {
+        window.kontra.emit('backgroundSound:toggle', this.model.backgroundSound)
       },
       validates: function () {
         return this.step === 3 && this.model && this.model.chosenParty !== ''

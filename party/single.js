@@ -1,5 +1,6 @@
 const loadAssets = require('../assets')
 const handleBackgroundMusic = require('../music.js')
+const handleBackgroundSound = require('../sound.js')
 const persistChanges = require('../persistance')
 const renderGround = require('../scenes/game.scene')
 const renderBall = require('../sprites/ball')
@@ -61,6 +62,11 @@ async function startSinglePlayerGame (initialState) {
   tileEngine.addObject(opponentScore)
 
   handleBackgroundMusic(crowdSound)
+  handleBackgroundSound({
+    dribblingSound,
+    throwSound,
+    whistleSound
+  })
 
   let loop = GameLoop({
     update: () => update({
@@ -75,7 +81,8 @@ async function startSinglePlayerGame (initialState) {
       opponentScore,
       playerName: initialState.name,
       dribblingSound,
-      throwSound
+      throwSound,
+      whistleSound
     }),
     render: () => {
       tileEngine.render()

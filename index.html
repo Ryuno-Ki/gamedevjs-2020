@@ -29,6 +29,8 @@
       </ul>
     </nav>
 
+    <p>IMPORTANT! Right now, only single player mode works reliably. Sorry!</p>
+
     <form
       id="form"
       method="POST"
@@ -140,6 +142,16 @@
 	    x-bind:checked="model.backgroundMusic"
 	    x-model="model.backgroundMusic" />
 	    Mute background music
+	</label>
+	<label>
+	  <input
+	    type="checkbox"
+	    name="background-sound"
+	    value="background-sound"
+	    x-on:change="toggleBackgroundSound()"
+	    x-bind:checked="model.backgroundSound"
+	    x-model="model.backgroundSound" />
+	    Mute background sound
 	</label>
       </fieldset>
     </div>
