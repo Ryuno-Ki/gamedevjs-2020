@@ -1,6 +1,6 @@
 function invitePeer (initialState) {
-  // TODO: https://github.com/socketio/socket.io-client
-  const socket = window.io()
+  const socket = window.io('https://bizarros-basketball-x.herokuapp.com/')
+
   socket.on('connect', () => {
     console.log('WebSocket connected')
     window.kontra.emit('socket', { status: 'connected' })
