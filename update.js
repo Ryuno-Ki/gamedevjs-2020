@@ -25,6 +25,15 @@ function update ({
     dribblingSound,
     throwSound
   })
+
+  window.kontra.on('score', () => {
+    ball.x = 17 + 5 * 64
+    ball.y = 16 + 4 * 64
+    player.x = 32 + 21 + (3 + 1) * 64
+    player.y = 16 + 4 * 64
+    opponent.x = 32 + 21 + (3 + 2) * 64
+    opponent.y = 16 + 4 * 64
+  })
 }
 
 function movePlayer ({
@@ -144,11 +153,23 @@ function moveBall ({
   }
 
   if (playerBasket.collidesWith(ball) && opponent.collidesWith(ball)) {
-    updateScore(opponentScore, 'score1', throwSound)
+    const currentScore = window.kontra.getStoreItem('score')
+    const newScore = currentScore.opponent - 0 + 1
+    updateScore(opponentScore, `score${newScore}`, throwSound)
+    window.kontra.setStoreItem('score', {
+      ...currentScore,
+      'opponent': newScore
+    })
   }
 
   if (opponentBasket.collidesWith(ball) && player.collidesWith(ball)) {
-    updateScore(playerScore, 'score1', throwSound)
+    const currentScore = window.kontra.getStoreItem('score')
+    const newScore = currentScore.player - 0 + 1
+    updateScore(playerScore, `score${newScore}`, throwSound)
+    window.kontra.setStoreItem('score', {
+      ...currentScore,
+      'player': newScore
+    })
   }
 
   if (dribblingSound) {
@@ -162,6 +183,7 @@ function updateScore (score, animation, throwSound) {
   if (throwSound) {
     throwSound.play()
   }
+  window.kontra.emit('score')
 }
 
 module.exports = update

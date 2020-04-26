@@ -155,6 +155,10 @@ const invitePeers = require('./rtc')
 
           const initialState = this.getInitialState()
           window.localStorage.setItem('state', JSON.stringify(initialState))
+	  window.localStorage.setItem('score', JSON.stringify({
+	    'player': 0,
+	    'opponent': 0
+	  }))
 
           if (this.model.chosenParty === 'initiator') {
             invitePeers(initialState)
