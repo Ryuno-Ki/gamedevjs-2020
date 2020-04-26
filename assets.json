@@ -3,7 +3,11 @@
     "./assets/Tilesheet/elements.png",
     "./assets/Tilesheet/groundGravel.png",
     "./assets/Spritesheet/sheet_characters.png",
-    "./assets/Spritesheet/sheet_charactersEquipment.png"
+    "./assets/Spritesheet/sheet_charactersEquipment.png",
+    "./assets/crowd.mp3",
+    "./assets/dribbling.mp3",
+    "./assets/throw.mp3",
+    "./assets/whistle.mp3"
   ],
   "initiator": [
     "./assets/Tilesheet/elements.png",

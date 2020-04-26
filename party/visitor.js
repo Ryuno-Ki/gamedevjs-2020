@@ -25,7 +25,13 @@ async function startVisitorGame (initialState) {
   persistChanges(initialState.party, initialState.name)
 
   const assets = await loadAssets(initialState.party)
-  const [ basketImage, groundImage, playerImage, ballImage, emojisImage ] = assets
+  const [
+    basketImage,
+    groundImage,
+    playerImage,
+    ballImage,
+    emojisImage
+  ] = assets
 
   const tileEngine = renderGround(groundImage)
   const player = renderPlayer(playerImage, 1)
@@ -66,7 +72,9 @@ async function startVisitorGame (initialState) {
       opponentBasket,
       playerScore,
       opponentScore,
-      playerName: initialState.name
+      playerName: initialState.name,
+      dribblingSound: null,
+      throwSound: null
     }),
     render: () => {
       tileEngine.render()

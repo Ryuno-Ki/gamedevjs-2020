@@ -1,4 +1,5 @@
 const loadAssets = require('../assets')
+const handleBackgroundMusic = require('../music.js')
 const persistChanges = require('../persistance')
 const renderGround = require('../scenes/game.scene')
 const renderBall = require('../sprites/ball')
@@ -83,7 +84,9 @@ async function startMultiPlayerGame (initialState) {
       opponentBasket,
       playerScore,
       opponentScore,
-      playerName: initialState.name
+      playerName: initialState.name,
+      dribblingSound,
+      throwSound
     }),
     render: () => {
       tileEngine.render()
@@ -122,30 +125,5 @@ function maybeRescale (canvas, context) {
   context.scale(scaleWidth, scaleHeight)
 }
 */
-
-function handleBackgroundMusic (crowdSound) {
-  // Kudos: https://stackoverflow.com/a/22446616
-  // and https://stackoverflow.com/a/32841351
-  crowdSound.addEventListener('timeupdate', function () {
-    const playback = this.currentTime / this.duration
-    if (playback < 0.5) {
-      this.volume = 2 * playback
-    } else if (playback > 0.5) {
-      this.volume = 2 - 2 * playback
-    } else {
-      this.volume = 1
-    }
-  })
-  crowdSound.loop = true
-  crowdSound.play()
-
-  window.kontra.on('backgroundMusic:toggle', (newState) => {
-    if (newState) {
-      crowdSound.play()
-    } else {
-      crowdSound.pause()
-    }
-  })
-}
 
 module.exports = startMultiPlayerGame

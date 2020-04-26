@@ -165,6 +165,7 @@ const invitePeers = require('./rtc')
             startMultiPlayerGame(initialState)
           } else if (this.model.chosenParty === 'single') {
             startSinglePlayerGame(initialState)
+	    window.kontra.emit('ready')
           } else {
             invitePeers(initialState)
 	    this.handler.joinSession(this.model.chosenSession, initialState.name)

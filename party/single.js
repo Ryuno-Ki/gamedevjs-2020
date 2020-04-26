@@ -1,4 +1,5 @@
 const loadAssets = require('../assets')
+const handleBackgroundMusic = require('../music.js')
 const persistChanges = require('../persistance')
 const renderGround = require('../scenes/game.scene')
 const renderBall = require('../sprites/ball')
@@ -27,7 +28,16 @@ async function startSinglePlayerGame (initialState) {
   persistChanges(initialState.party, initialState.name)
 
   const assets = await loadAssets(initialState.party)
-  const [ basketImage, groundImage, playerImage, ballImage ] = assets
+  const [
+    basketImage,
+    groundImage,
+    playerImage,
+    ballImage,
+    crowdSound,
+    dribblingSound,
+    throwSound,
+    whistleSound
+  ] = assets
 
   const tileEngine = renderGround(groundImage)
   const control = renderControl(groundImage)
@@ -50,6 +60,8 @@ async function startSinglePlayerGame (initialState) {
   tileEngine.addObject(playerScore)
   tileEngine.addObject(opponentScore)
 
+  handleBackgroundMusic(crowdSound)
+
   let loop = GameLoop({
     update: () => update({
       canvas,
@@ -61,7 +73,9 @@ async function startSinglePlayerGame (initialState) {
       opponentBasket,
       playerScore,
       opponentScore,
-      playerName: initialState.name
+      playerName: initialState.name,
+      dribblingSound,
+      throwSound
     }),
     render: () => {
       tileEngine.render()
@@ -76,6 +90,7 @@ async function startSinglePlayerGame (initialState) {
     }
   })
   loop.start()
+  whistleSound.play()
   return Promise.resolve(true)
 }
 

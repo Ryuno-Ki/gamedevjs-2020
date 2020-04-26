@@ -8,10 +8,12 @@ function update ({
   opponentBasket,
   playerScore,
   opponentScore,
-  playerName
+  playerName,
+  dribblingSound,
+  throwSound
 }) {
   movePlayer({ player, canvas, tileEngine, playerName })
-  moveOpponent(opponent, canvas)
+  moveOpponent({ opponent, canvas })
   moveBall({
     player,
     opponent,
@@ -20,10 +22,17 @@ function update ({
     opponentBasket,
     playerScore,
     opponentScore,
+    dribblingSound,
+    throwSound
   })
 }
 
-function movePlayer ({ player, canvas, tileEngine, playerName }) {
+function movePlayer ({
+  player,
+  canvas,
+  tileEngine,
+  playerName,
+}) {
   const emit = window.kontra.emit
   const keyPressed = window.kontra.keyPressed
 
@@ -77,7 +86,7 @@ function movePlayer ({ player, canvas, tileEngine, playerName }) {
   player.update()
 }
 
-function moveOpponent (opponent, canvas) {
+function moveOpponent ({ opponent, canvas }) {
   const keyPressed = window.kontra.keyPressed
 
   if (keyPressed('a') && opponent.x >= 8) {
@@ -112,7 +121,9 @@ function moveBall ({
   playerBasket,
   opponentBasket,
   playerScore,
-  opponentScore
+  opponentScore,
+  dribblingSound,
+  throwSound
 }) {
   const dpx = player.x - ball.x
   const dpy = player.y - ball.y
@@ -133,18 +144,24 @@ function moveBall ({
   }
 
   if (playerBasket.collidesWith(ball) && opponent.collidesWith(ball)) {
-    updateScore(opponentScore, 'score1')
+    updateScore(opponentScore, 'score1', throwSound)
   }
 
   if (opponentBasket.collidesWith(ball) && player.collidesWith(ball)) {
-    updateScore(playerScore, 'score1')
+    updateScore(playerScore, 'score1', throwSound)
   }
 
+  if (dribblingSound) {
+    dribblingSound.play()
+  }
   ball.update()
 }
 
-function updateScore (score, animation) {
+function updateScore (score, animation, throwSound) {
   score.playAnimation(animation)
+  if (throwSound) {
+    throwSound.play()
+  }
 }
 
 module.exports = update
