@@ -105,6 +105,7 @@ dist
 
 ### Project specific
 game.js
+assets-to-load.json
 *.zip
 .*.swp
 !dist/.gitkeep

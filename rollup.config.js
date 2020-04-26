@@ -1,11 +1,20 @@
 import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
+import json from '@rollup/plugin-json'
 import banner from 'rollup-plugin-banner'
 import copy from 'rollup-plugin-copy'
 import html from 'rollup-plugin-html2'
 import filesize from 'rollup-plugin-filesize'
 import sizes from 'rollup-plugin-sizes'
 import { terser } from 'rollup-plugin-terser'
+
+import * as assets from './assets.json'
+
+const assetsToCopy = []
+  .concat(assets.single)
+  .concat(assets.initiator)
+  .concat(assets.joiner)
+  .concat(assets.visitor)
 
 const gpl = `This game is a homage to https://xkcd.com/2291/
 Copyright (C) 2020 - André Jaenisch
@@ -24,7 +33,6 @@ const htmlOptions = {
 }
 
 const copyOptions = {
-  flatten: false,
   targets: [{
     src: 'favicon.ico', dest: 'dist/',
   }, {
@@ -42,7 +50,7 @@ const copyOptions = {
   }, {
     src: 'assets/**/*.mp3', dest: 'dist/assets/'
   }, {
-    src: 'assets/**/*.png', dest: 'dist/assets/'
+    src: assetsToCopy, dest: 'dist/assets/'
   }]
 }
 
@@ -54,6 +62,7 @@ export default {
     name: 'game'
   },
   plugins: [
+    json(),
     resolve(),
     commonjs(),
     terser(),
