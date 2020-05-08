@@ -39,7 +39,7 @@
     "openmoji-spritemap-generator": "2.1.1",
     "simple-peer": "9.7.0",
     "socket.io": "2.3.0",
-    "webrtc-adapter": "7.5.1"
+    "webrtc-adapter": "7.6.0"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "11.1.0",
