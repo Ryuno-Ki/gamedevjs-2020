@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/Ryuno-Ki/gamedevjs-2020#readme",
   "dependencies": {
-    "@rollup/plugin-json": "4.0.3",
+    "@rollup/plugin-json": "4.1.0",
     "alpinejs": "2.3.5",
     "express": "4.17.1",
     "install": "0.13.0",
