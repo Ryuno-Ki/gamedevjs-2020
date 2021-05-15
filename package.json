@@ -34,11 +34,11 @@
     "install": "0.13.0",
     "kontra": "6.9.1",
     "nanoid": "3.1.23",
-    "npm": "6.14.5",
+    "npm": "6.14.6",
     "openmoji": "13.0.0",
     "openmoji-spritemap-generator": "2.1.4",
     "simple-peer": "9.7.2",
-    "socket.io": "2.4.0",
+    "socket.io": "2.4.1",
     "webrtc-adapter": "7.7.1"
   },
   "devDependencies": {
@@ -47,10 +47,10 @@
     "gh-pages": "3.0.0",
     "rollup": "2.48.0",
     "rollup-plugin-banner": "0.2.1",
-    "rollup-plugin-copy": "3.3.0",
+    "rollup-plugin-copy": "3.4.0",
     "rollup-plugin-filesize": "9.0.0",
     "rollup-plugin-html2": "2.0.0",
     "rollup-plugin-sizes": "1.0.2",
-    "rollup-plugin-terser": "6.1.0"
+    "rollup-plugin-terser": "7.0.2"
   }
 }
